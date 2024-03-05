@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "704783363426",
+    "project_id": "marketsimulation-929db",
+    "storage_bucket": "marketsimulation-929db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704783363426:android:a3e0c70b02a0e5c8bc903b",
+        "android_client_info": {
+          "package_name": "io.launchclub.marketSim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmZ4vxHhV2eR7R62aDmWoVRWCGhNsXSqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
