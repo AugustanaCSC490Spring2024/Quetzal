@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +66,7 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 10),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
                 fillColor: Colors.white,
@@ -73,6 +78,7 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 10),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
                 fillColor: Colors.white,
@@ -83,7 +89,9 @@ class _SignUpState extends State<SignUp> {
               ),
               obscureText: true,
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             signUpButton()
           ],
         ),
@@ -91,28 +99,37 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-   Widget signUpButton() {
+  Widget signUpButton() {
     return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-    ),
-    onPressed: () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => const SignIn(), 
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
-    },
-    child: const Text(
-      'Sign Up',
-      style: TextStyle(
-        fontWeight: FontWeight.bold, 
       ),
-    ),
-  );
-}
+      onPressed: () {
+        String email = _emailController.text.trim();
+        String password = _passwordController.text.trim();
+        FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) {
+              print("Successfully created an account!");
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const SignIn(),
+            ),
+          );
+        }).onError((error, stackTrace) {
+          print("Error ${error.toString()}");
+        });
+      },
+      child: const Text(
+        'Sign Up',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 }

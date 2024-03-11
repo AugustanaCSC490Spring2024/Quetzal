@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  const SignIn({Key? key}) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +44,7 @@ class _SignInState extends State<SignIn> {
             ),
             const SizedBox(height: 100),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
                 fillColor: Colors.white,
@@ -51,6 +56,7 @@ class _SignInState extends State<SignIn> {
             ),
             const SizedBox(height: 5),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
                 fillColor: Colors.white,
@@ -59,10 +65,10 @@ class _SignInState extends State<SignIn> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              obscureText: true, //
+              obscureText: true,
             ),
             signUpOption(),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
             logInButton(),
           ],
         ),
@@ -82,46 +88,51 @@ class _SignInState extends State<SignIn> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (BuildContext context) => const SignUp()),
+                builder: (BuildContext context) => const SignUp(),
+              ),
             );
           },
           child: const Text(
             ' Sign Up',
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            style:
+                TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
           ),
         ),
       ],
     );
   }
 
-Widget logInButton() {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10), 
-      ),
-    ),
-    onPressed: () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => const HomePage(),
+  Widget logInButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
-    },
-    child: const Text('Log In'),
-  );
-}
-
-
-
-
-
+      ),
+      onPressed: () {
+        String email = _emailController.text.trim();
+        String password = _passwordController.text.trim();
+        FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((value) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage(),
+            ),
+          );
+        }).onError((error, stackTrace) {
+          print("Error ${error.toString()}");
+        });
+      },
+      child: const Text('Log In'),
+    );
+  }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
