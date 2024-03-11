@@ -141,6 +141,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('HOME'),
+      ),
+      body: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: () {
+          FirebaseAuth.instance.signOut().then((value) {
+            print("Signed Out.");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const SignIn(),
+              ),
+            );
+          });
+        },
+        child: const Text('Log Out'),
+      ),
+    );
   }
 }
