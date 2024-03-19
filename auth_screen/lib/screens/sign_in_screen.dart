@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auth_screen/screens/home_screen.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -94,8 +95,7 @@ class _SignInState extends State<SignIn> {
           },
           child: const Text(
             ' Sign Up',
-            style:
-                TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -117,7 +117,8 @@ class _SignInState extends State<SignIn> {
         FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password)
             .then((value) {
-          Navigator.of(context).push(
+          Navigator.pushReplacement(
+            context,
             MaterialPageRoute(
               builder: (BuildContext context) => const HomePage(),
             ),
@@ -131,41 +132,3 @@ class _SignInState extends State<SignIn> {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('HOME'),
-      ),
-      body: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        onPressed: () {
-          FirebaseAuth.instance.signOut().then((value) {
-            print("Signed Out.");
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => const SignIn(),
-              ),
-            );
-          });
-        },
-        child: const Text('Log Out'),
-      ),
-    );
-  }
-}
