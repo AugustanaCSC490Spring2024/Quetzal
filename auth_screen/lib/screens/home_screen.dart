@@ -1,6 +1,7 @@
+import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:auth_screen/screens/sign_in_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,42 +11,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0; // track the selected index
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('HOME'),
       ),
-      body: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        onPressed: () {
-          FirebaseAuth.instance.signOut().then((value) {
-            print("Signed Out.");
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => const SignIn(),
-              ),
-            );
-          });
-        },
-        child: const Text('Log Out'),
-      ),
+
+      //bottom nav bar
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
-          BottomNavigationBarItem(
-            label: "Settings",
-            icon: Icon(Icons.settings),
-          ),
-          BottomNavigationBarItem(label: "Profile", icon: Icon(Icons.heart_broken))
+          BottomNavigationBarItem(label: "Game",icon: Icon(Icons.gamepad),),
+          BottomNavigationBarItem(label: "Profile", icon: Icon(Icons.person))
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: (int index){
+          setState(() {
+            _selectedIndex = index;
+            if (index == 2) {
+               // Check if the "Profile" button is tapped
+              Navigator.push(
+
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );}
+              
+          });
+        },
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/screens/home_screen.dart';
 
+
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
@@ -19,10 +20,10 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('MARKET SIM'),
+        centerTitle: true,
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        padding: const EdgeInsets.all(20.0),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.green, Colors.black],
@@ -31,46 +32,90 @@ class _SignInState extends State<SignIn> {
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 50),
             const Text(
               'Sign In',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 100),
-            TextField(
+            const SizedBox(height: 30),
+            TextFormField(
               controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: 'Email',
-                fillColor: Colors.white,
+                hintStyle: TextStyle(color: Colors.white70),
                 filled: true,
+                fillColor: Colors.white.withOpacity(0.3),
+                prefixIcon: Icon(Icons.email, color: Colors.white),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
                 ),
               ),
+              style: TextStyle(color: Colors.white),
             ),
-            const SizedBox(height: 5),
-            TextField(
+            const SizedBox(height: 15),
+            TextFormField(
               controller: _passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
-                fillColor: Colors.white,
+                hintStyle: TextStyle(color: Colors.white70),
                 filled: true,
+                fillColor: Colors.white.withOpacity(0.3),
+                prefixIcon: Icon(Icons.lock, color: Colors.white),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
                 ),
               ),
               obscureText: true,
+              style: TextStyle(color: Colors.white),
             ),
-            signUpOption(),
             const SizedBox(height: 20),
-            logInButton(),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ).copyWith(
+                backgroundColor: MaterialStateProperty.resolveWith<Color>((states) => Colors.white),
+              ),
+              onPressed: () {
+                String email = _emailController.text.trim();
+                String password = _passwordController.text.trim();
+                FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: email, password: password)
+                    .then((value) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(),
+                    ),
+                  );
+                }).onError((error, stackTrace) {
+                  print("Error ${error.toString()}");
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Text(
+                  'Log In',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            signUpOption(),
           ],
         ),
       ),
@@ -78,56 +123,31 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget signUpOption() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Don't have an account?",
-          style: TextStyle(color: Colors.white),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => const SignUp(),
-              ),
-            );
-          },
-          child: const Text(
-            ' Sign Up',
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const SignUp(),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget logInButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      onPressed: () {
-        String email = _emailController.text.trim();
-        String password = _passwordController.text.trim();
-        FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((value) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const HomePage(),
-            ),
-          );
-        }).onError((error, stackTrace) {
-          print("Error ${error.toString()}");
-        });
+        );
       },
-      child: const Text('Log In'),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Don't have an account? ",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            'Sign Up',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
