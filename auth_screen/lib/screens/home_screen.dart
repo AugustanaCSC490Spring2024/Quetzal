@@ -9,17 +9,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0; // track the selected index
+  int _selectedIndex = 0; 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_getSelectedTitle()),
-        automaticallyImplyLeading: _selectedIndex == 2 ? false : true, // Hide back button for Profile screen
+
       ),
       body: _buildBody(),
-      //bottom nav bar
+      
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
@@ -58,9 +58,8 @@ class _HomePageState extends State<HomePage> {
         return _buildGamePage();
       case 2:
         return ProfileScreen();
-      default:
-        return Container();
     }
+    return Container();
   }
 
   Widget _buildHomePage() {

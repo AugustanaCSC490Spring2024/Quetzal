@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:auth_screen/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 
@@ -25,11 +24,11 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 3),
               Text(
                 'Username',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               Text(
                 'username@gmail.com',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
               ElevatedButton(
