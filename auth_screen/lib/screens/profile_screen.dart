@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -11,61 +12,85 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(2),
-          child: Column(
-            children: [
-              SizedBox(
-                width: 120,
-                height: 120,
-                child: Icon(Icons.person),
-              ),
-              const SizedBox(height: 3),
-              Text(
-                'Full Name',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                'username@gmail.com',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("Edit Profile"),
-              ),
-              const SizedBox(height: 20),
-              const Divider(),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          late Map<String, dynamic> userData;
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty){
+            userData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          }else{
+            userData = {};
+          }
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: Icon(Icons.person),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '${userData['FirstName']} ${userData['LastName']}',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Text(
+                  userData['Email'] ?? '',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    
+                  },
+                  child: const Text("Edit Profile"),
+                ),
+                const SizedBox(height: 20),
+                const Divider(),
 
-              //Menu
-              ProfileMenuWidget(
-                title: 'Settings',
-                iconData: Icons.settings,
-                onPress: () {},
-              ),
-              const Divider(),
+                
+                ProfileMenuWidget(
+                  title: 'Settings',
+                  iconData: Icons.settings,
+                  onPress: () {
+                    
+                  },
+                ),
+                const Divider(),
 
-              //logout button
-              ProfileMenuWidget(
-                title: 'Log Out',
-                iconData: Icons.logout,
-                textColor: Color.fromARGB(255, 228, 50, 14),
-                onPress: () {
-                  FirebaseAuth.instance.signOut().then((value) {
-                    print("Signed Out.");
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => const SignIn(),
-                      ),
-                    );
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+                
+                ProfileMenuWidget(
+                  title: 'Log Out',
+                  iconData: Icons.logout,
+                  textColor: Colors.red,
+                  onPress: () {
+                    FirebaseAuth.instance.signOut().then((value) {
+                      print("Signed Out.");
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const SignIn(),
+                        ),
+                      );
+                    });
+                  },
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -94,16 +119,13 @@ class ProfileMenuWidget extends StatelessWidget {
         height: 40,
         child: Icon(
           iconData,
-          color: Color.fromARGB(255, 1, 1, 16),
+          color: Colors.black,
           size: 30,
         ),
       ),
       title: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.apply(color: textColor),
+        style: TextStyle(color: textColor),
       ),
     );
   }
