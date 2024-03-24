@@ -49,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
               //logout button
               ProfileMenuWidget(
                 title: 'Log Out',
-                iconData: Icons.light,
+                iconData: Icons.logout,
                 textColor: Color.fromARGB(255, 228, 50, 14),
                 onPress: () {
                   FirebaseAuth.instance.signOut().then((value) {
@@ -94,7 +94,7 @@ class ProfileMenuWidget extends StatelessWidget {
         height: 40,
         child: Icon(
           iconData,
-          color: Colors.lime,
+          color: Color.fromARGB(255, 1, 1, 16),
           size: 30,
         ),
       ),
