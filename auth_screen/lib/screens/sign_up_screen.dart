@@ -148,6 +148,7 @@ class _SignUpState extends State<SignUp> {
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
             print("Successfully created an account!");
+            value.user!.updateDisplayName('$firstName $lastName');
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (BuildContext context) => const SignIn(),
