@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/user_profile.dart';
+import 'package:auth_screen/password_util.dart';
 
 
 class SignUp extends StatefulWidget {
@@ -120,34 +121,43 @@ class _SignUpState extends State<SignUp> {
       String lastName = _lastNameController.text.trim();
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
+      
       if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Please fill in all fields'),
         ));
-      } else {
-        UserModel user = UserModel(
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        );
-        user.saveToFirestore().then((_) {
-          print("User data saved to Firestore");
-          FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) {
-              print("Successfully created an account!");
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const SignIn(),
-                ),
-              );
-            })
-            .catchError((error, stackTrace) {
-              print("Error ${error.toString()}");
-            });
-        });
+        return; 
       }
+      
+      if (!isPasswordStrong(password)) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Password is not strong enough'),
+        ));
+        return; 
+      }
+      
+      
+      UserModel user = UserModel(
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      );
+      user.saveToFirestore().then((_) {
+        print("User data saved to Firestore");
+        FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+            print("Successfully created an account!");
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (BuildContext context) => const SignIn(),
+              ),
+            );
+          })
+          .catchError((error, stackTrace) {
+            print("Error ${error.toString()}");
+          });
+      });
     }, 
     child: const Text(
       'Sign Up',

@@ -6,13 +6,13 @@ class UserModel{
   final String firstName;
   final String lastName;
   final String email;
-  final String password;
+ 
 
   const UserModel({
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.password,
+
 
   });
 
@@ -21,7 +21,7 @@ class UserModel{
       "FirstName" : firstName,
       "LastName" : lastName,
       "Email" : email,
-      "Password": password,
+
     };
   }
   Future<void> saveToFirestore() async {
