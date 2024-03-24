@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auth_screen/user_profile.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -44,6 +49,7 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: _firstNameController,
               decoration: InputDecoration(
                 hintText: 'First Name',
                 fillColor: Colors.white,
@@ -55,6 +61,7 @@ class _SignUpState extends State<SignUp> {
             ),
             const SizedBox(height: 10),
             TextField(
+              controller: _lastNameController,
               decoration: InputDecoration(
                 hintText: 'Last Name',
                 fillColor: Colors.white,
@@ -100,36 +107,54 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget signUpButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
-      onPressed: () {
-        String email = _emailController.text.trim();
-        String password = _passwordController.text.trim();
-        FirebaseAuth.instance
+    ),
+    onPressed: () {
+      String firstName = _firstNameController.text.trim();
+      String lastName = _lastNameController.text.trim();
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+      if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Please fill in all fields'),
+        ));
+      } else {
+        UserModel user = UserModel(
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        );
+        user.saveToFirestore().then((_) {
+          print("User data saved to Firestore");
+          FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) {
               print("Successfully created an account!");
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => const SignIn(),
-            ),
-          );
-        }).onError((error, stackTrace) {
-          print("Error ${error.toString()}");
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const SignIn(),
+                ),
+              );
+            })
+            .catchError((error, stackTrace) {
+              print("Error ${error.toString()}");
+            });
         });
-      },
-      child: const Text(
-        'Sign Up',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
+      }
+    }, 
+    child: const Text(
+      'Sign Up',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
       ),
-    );
-  }
+    ),
+  );
+}
 }
