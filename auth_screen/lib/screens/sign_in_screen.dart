@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
         padding: const EdgeInsets.all(20.0),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green, Colors.black],
+            colors: [Color.fromARGB(255, 36, 112, 39), Color.fromARGB(255, 102, 94, 18), Color.fromARGB(255, 0, 0, 0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomLeft,
           ),

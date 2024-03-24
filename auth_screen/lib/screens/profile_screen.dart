@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 3),
               Text(
-                'Username',
+                'Full Name',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               Text(
