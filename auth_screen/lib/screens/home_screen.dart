@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
+import 'package:auth_screen/api_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,6 +11,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0; 
+  List<Map<String, dynamic>> _marketValues = [];
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +65,77 @@ class _HomePageState extends State<HomePage> {
     return Container();
   }
 
-  Widget _buildHomePage() {
-    return Center(
-      child: Text('Home Page'),
-    );
+ Widget _buildHomePage() {
+  return Center(
+    child: _isLoading
+        ? CircularProgressIndicator()
+        : SingleChildScrollView(
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    print('Button pressed');
+                    _fetchMarketValues();
+                  },
+                  child: Text('Fetch Market Values'),
+                ),
+                SizedBox(height: 20),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _marketValues.length + 1, // Add 1 for the "Done" button
+                  itemBuilder: (context, index) {
+                    if (index < _marketValues.length) {
+                      final stock = _marketValues[index];
+                      return ListTile(
+                        title: Text(stock['ticker']),
+                        subtitle: Text(stock['name']),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            
+                            setState(() {
+                              _marketValues.clear(); 
+                            });
+                          },
+                          child: Text('Done'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+  );
+}
+
+
+
+
+void _fetchMarketValues() async {
+  setState(() {
+    _isLoading = true;
+  });
+  try {
+    
+    final List<Map<String, dynamic>> marketValues =
+        await APIService().fetchStockMarketValues();
+    setState(() {
+      _marketValues = marketValues;
+      _isLoading = false;
+    });
+  } catch (e) {
+    print('Error fetching market values: $e');
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   Widget _buildGamePage() {
     return Center(
