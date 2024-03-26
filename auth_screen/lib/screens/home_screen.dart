@@ -77,13 +77,13 @@ class _HomePageState extends State<HomePage> {
                     print('Button pressed');
                     _fetchMarketValues();
                   },
-                  child: Text('Fetch Market Values'),
+                  child: Text('Fetch Ticker & Name'),
                 ),
                 SizedBox(height: 20),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: _marketValues.length + 1, // Add 1 for the "Done" button
+                  itemCount: _marketValues.length + 1, 
                   itemBuilder: (context, index) {
                     if (index < _marketValues.length) {
                       final stock = _marketValues[index];
