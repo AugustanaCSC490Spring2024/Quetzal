@@ -32,12 +32,12 @@ class CustomSearch extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
+      //IconButton(
+        //icon: Icon(Icons.clear),
+        //onPressed: () {
+          //query = '';
+        //},
+      //),
     ];
   }
 
@@ -87,13 +87,16 @@ Future<Map<String, dynamic>> _fetchTickerInfo(String ticker) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
-    return data['results']; // Access the 'results' field from the response
+    if (data.containsKey('results')) {
+      return data['results'] as Map<String, dynamic>;
+    } else {
+      throw Exception('Unexpected response format: ${response.body}');
+    }
   } else {
     print('Failed to fetch tickers: ${response.statusCode}');
     throw Exception('Failed to fetch tickers');
   }
 }
-
 
 
 
