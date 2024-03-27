@@ -1,7 +1,8 @@
 import 'package:auth_screen/search_button.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
-import 'package:auth_screen/api_service.dart';
+import 'package:auth_screen/portfolio_management.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<Map<String, dynamic>> _marketValues = [];
+
   bool _isLoading = false;
 
   @override
@@ -79,7 +80,9 @@ class _HomePageState extends State<HomePage> {
           ? CircularProgressIndicator()
           : SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  PortfolioManagementWidget(),
  
                 ],
               ),

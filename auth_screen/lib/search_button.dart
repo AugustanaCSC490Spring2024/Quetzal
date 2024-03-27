@@ -18,7 +18,7 @@ class SearchButton extends StatelessWidget {
   void _showSearch(BuildContext context) async {
     final String? result = await showSearch<String>(
       context: context,
-      delegate: _SearchDelegate(),
+      delegate: CustomSearch(),
     );
     if (result != null) {
       onPressed(result);
@@ -26,7 +26,7 @@ class SearchButton extends StatelessWidget {
   }
 }
 
-class _SearchDelegate extends SearchDelegate<String> {
+class CustomSearch extends SearchDelegate<String> {
   final String apiKey ="K2C82obyi9y7AG7GOND0JTRt_j52UB4P" ; 
 
   @override
@@ -77,6 +77,7 @@ class _SearchDelegate extends SearchDelegate<String> {
   }
 
 Future<Map<String, dynamic>> _fetchTickerInfo(String ticker) async {
+  ticker = ticker.toUpperCase();
   final DateTime currentDate = DateTime.now();
   final String formattedDate = '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
   
