@@ -54,10 +54,55 @@ class CustomSearch extends SearchDelegate<String> {
 
 
   @override
-  Widget buildSuggestions(BuildContext context) {
+@override
+Widget buildSuggestions(BuildContext context) {
+  if (query.isEmpty) {
     return Container();
   }
 
+  return FutureBuilder(
+    future: _fetchSuggestions(query),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      } else {
+        final suggestions = snapshot.data as List<String>?; // Null-safe casting
+        return suggestions != null ? _buildSuggestionsList(suggestions) : Container(); // Null check before calling _buildSuggestionsList
+      }
+    },
+  );
+}
+
+
+   Widget _buildSuggestionsList(List<String> suggestions) {
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        final suggestion = suggestions[index];
+        return ListTile(
+          title: Text(suggestion),
+          onTap: () {
+            close(context, suggestion);
+          },
+        );
+      },
+    );
+  }
+ Future<List<String>> _fetchSuggestions(String query) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://api.polygon.io/v3/reference/tickers?search=$query&apiKey=$apiKey'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body)['results'];
+      return List<String>.from(data.map((tickerData) => tickerData['ticker']));
+    } else {
+      throw Exception('Failed to fetch suggestions: ${response.statusCode}');
+    }
+  }
 
 
   @override

@@ -12,7 +12,7 @@ class APIService {
       
       final response = await http.get(
         Uri.parse(
-            'https://api.polygon.io/v3/reference/tickers/$ticker?date=$formattedDate&apiKey=$apiKey'),
+          'https://api.polygon.io/v3/reference/tickers/$ticker?date=$formattedDate&apiKey=$apiKey'),
       );
 
       if (response.statusCode == 200) {
