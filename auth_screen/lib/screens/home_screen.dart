@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
         actions: [
           SearchButton(
             onPressed: (query) {
-              // Handle the search query here
               print('Search query: $query');
             },
           ),

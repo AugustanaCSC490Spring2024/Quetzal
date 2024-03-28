@@ -79,8 +79,9 @@ Widget buildSuggestions(BuildContext context) {
      } else if (snapshot.hasError) {
        return Center(child: Text('Error: ${snapshot.error}'));
      } else {
-       final suggestions = snapshot.data; // Null-safe casting
-       return suggestions != null ? _buildSuggestionsList(suggestions) : Container(); // Null check before calling _buildSuggestionsList
+       final suggestions = snapshot.data; 
+       return suggestions != null ?
+        _buildSuggestionsList(suggestions) : Container(); 
      }
    },
  );
