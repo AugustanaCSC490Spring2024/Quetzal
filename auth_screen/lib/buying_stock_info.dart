@@ -27,7 +27,7 @@ class BuyingStockInfoPage extends StatelessWidget {
 
                     
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Buy action for $ticker'),
+                      content: Text('Bought $ticker'),
                     ));
                   },
                   child: Text('Buy'),
@@ -41,7 +41,7 @@ class BuyingStockInfoPage extends StatelessWidget {
 
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Sell action for $ticker'),
+                      content: Text('Sold $ticker'),
                     ));
                   },
                   child: Text('Sell'),
