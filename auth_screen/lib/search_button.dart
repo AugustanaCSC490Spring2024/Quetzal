@@ -89,54 +89,53 @@ Widget buildSuggestions(BuildContext context) {
 
 
 
-
 Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
-  return ListView.builder(
+  return ListView.separated(
     itemCount: suggestions.length,
+    separatorBuilder: (context, index) => Divider(color: Colors.grey),
     itemBuilder: (context, index) {
       final suggestion = suggestions[index];
       final ticker = suggestion['ticker'];
       final name = suggestion['name'];
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BuyingStockInfoPage(ticker: ticker),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 111, 169, 217), // Change the button color as needed
-            padding: EdgeInsets.all(16.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+      return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BuyingStockInfoPage(ticker: ticker),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Name: $name',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Change the text color as needed
-                ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black, padding: EdgeInsets.all(16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ), 
+          
+          backgroundColor: Colors.blue, // Button color
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Name: $name',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black, // Name color
               ),
-              SizedBox(height: 8.0),
-              Text(
-                'Ticker Symbol: $ticker',
-                style: TextStyle(color: Colors.white), // Change the text color as needed
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Ticker Symbol: $ticker',
+              style: TextStyle(color: Colors.black), // Ticker color
+            ),
+          ],
         ),
       );
     },
   );
 }
+
 
 
 
