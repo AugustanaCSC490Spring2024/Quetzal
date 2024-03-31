@@ -7,13 +7,52 @@ class BuyingStockInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Implement your UI to display information about the selected stock ticker
     return Scaffold(
       appBar: AppBar(
         title: Text('Stock Information'),
       ),
-      body: Center(
-        child: Text('Information for $ticker'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Information for $ticker', style: TextStyle(fontSize: 24)),
+            SizedBox(height: 20), 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    
+
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Buy action for $ticker'),
+                    ));
+                  },
+                  child: Text('Buy'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Colors.green, 
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    
+
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Sell action for $ticker'),
+                    ));
+                  },
+                  child: Text('Sell'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Colors.red, 
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
