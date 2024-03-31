@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auth_screen/buying_stock_info.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -63,7 +64,6 @@ class CustomSearch extends SearchDelegate<String> {
 
 
 
- @override
 @override
 Widget buildSuggestions(BuildContext context) {
  if (query.isEmpty) {
@@ -90,34 +90,74 @@ Widget buildSuggestions(BuildContext context) {
 
 
 
-  Widget _buildSuggestionsList(List<String> suggestions) {
-   return ListView.builder(
-     itemCount: suggestions.length,
-     itemBuilder: (context, index) {
-       final suggestion = suggestions[index];
-       return ListTile(
-         title: Text(suggestion),
-         onTap: () {
-           close(context, suggestion);
-         },
-       );
-     },
-   );
- }
-Future<List<String>> _fetchSuggestions(String query) async {
-   final response = await http.get(
-     Uri.parse(
-         'https://api.polygon.io/v3/reference/tickers?search=$query&apiKey=$apiKey'),
-   );
+Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
+  return ListView.builder(
+    itemCount: suggestions.length,
+    itemBuilder: (context, index) {
+      final suggestion = suggestions[index];
+      final ticker = suggestion['ticker'];
+      final name = suggestion['name'];
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BuyingStockInfoPage(ticker: ticker),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 111, 169, 217), // Change the button color as needed
+            padding: EdgeInsets.all(16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Name: $name',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // Change the text color as needed
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                'Ticker Symbol: $ticker',
+                style: TextStyle(color: Colors.white), // Change the text color as needed
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 
 
-   if (response.statusCode == 200) {
-     final List<dynamic> data = jsonDecode(response.body)['results'];
-     return List<String>.from(data.map((tickerData) => tickerData['ticker']));
-   } else {
-     throw Exception('Failed to fetch suggestions: ${response.statusCode}');
-   }
- }
+
+
+Future<List<Map<String, dynamic>>> _fetchSuggestions(String query) async {
+  final response = await http.get(
+    Uri.parse(
+        'https://api.polygon.io/v3/reference/tickers?search=$query&apiKey=$apiKey'),
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body)['results'];
+    return List<Map<String, dynamic>>.from(data.map((tickerData) => {
+      'name': tickerData['name'],
+      'ticker': tickerData['ticker']
+    }));
+  } else {
+    throw Exception('Failed to fetch suggestions: ${response.statusCode}');
+  }
+}
+
 
 
 
