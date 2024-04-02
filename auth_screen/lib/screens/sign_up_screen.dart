@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/user_profile.dart';
 import 'package:auth_screen/password_util.dart';
-
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -30,7 +28,11 @@ class _SignUpState extends State<SignUp> {
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 107, 97, 7), Color.fromARGB(255, 7, 98, 10), Colors.black],
+            colors: [
+              Color.fromARGB(255, 107, 97, 7),
+              Color.fromARGB(255, 7, 98, 10),
+              Colors.black
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomLeft,
           ),
@@ -108,64 +110,67 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget signUpButton() {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
-    ),
-    onPressed: () {
-      String firstName = _firstNameController.text.trim();
-      String lastName = _lastNameController.text.trim();
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
-      
-      if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Please fill in all fields'),
-        ));
-        return; 
-      }
-      
-      if (!isPasswordStrong(password)) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Password is not strong enough'),
-        ));
-        return; 
-      }
-      
-      
-      UserModel user = UserModel(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-      );
-      user.saveToFirestore().then((_) {
-        print("User data saved to Firestore");
-        FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) {
+      onPressed: () {
+        String firstName = _firstNameController.text.trim();
+        String lastName = _lastNameController.text.trim();
+        String email = _emailController.text.trim();
+        String password = _passwordController.text.trim();
+
+        if (firstName.isEmpty ||
+            lastName.isEmpty ||
+            email.isEmpty ||
+            password.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Please fill in all fields'),
+          ));
+          return;
+        }
+
+        if (!isPasswordStrong(password)) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Password is not strong enough'),
+          ));
+          return;
+        }
+
+        UserModel user = UserModel(
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+        );
+        user.saveToFirestore().then((_) {
+          print("User data saved to Firestore");
+          FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password)
+              .then((value) {
             print("Successfully created an account!");
             value.user!.updateDisplayName('$firstName $lastName');
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.pushReplacement(
+              context,
               MaterialPageRoute(
                 builder: (BuildContext context) => const SignIn(),
               ),
             );
-          })
-          .catchError((error, stackTrace) {
+          }).catchError((error, stackTrace) {
             print("Error ${error.toString()}");
           });
-      });
-    }, 
-    child: const Text(
-      'Sign Up',
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
+        });
+      },
+      child: const Text(
+        'Sign Up',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
