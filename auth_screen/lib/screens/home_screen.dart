@@ -74,7 +74,6 @@ class _HomePageState extends State<HomePage> {
         return Container();
     }
   }
-
 Widget _buildHomePage() {
   return Center(
     child: _isLoading
@@ -84,16 +83,41 @@ Widget _buildHomePage() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 PortfolioManagementWidget(),
-                SizedBox(height: 20), // Add spacing between PortfolioManagementWidget and stock list
+                 _buildUserMoney(),  // Display user's available money
+                SizedBox(height: 20), // Add spacing 
                 Text(
                   'Your Stocks',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10), // Add spacing below "Your Stocks"
+                SizedBox(height: 10),
+                // Add spacing below "Your Stocks"
                 _buildUserStockList(), // Display user's stocks
+                SizedBox(height: 20), // Add spacing
+                
               ],
             ),
           ),
+  );
+}
+
+Widget _buildUserMoney() {
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance.collection('portfolios').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+        double userMoney = (portfolioData.containsKey('money') ? portfolioData['money'] : 100000); // default value is 100000
+
+        return Text(
+          'Buying Power: \$${userMoney.toStringAsFixed(2)}', // Displaying user's available money
+          style: TextStyle(fontSize: 16),
+        );
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        return CircularProgressIndicator();
+      }
+    },
   );
 }
 
