@@ -1,3 +1,4 @@
+import 'package:auth_screen/trading_stock_handller.dart';
 import 'package:flutter/material.dart';
 
 class BuyingStockInfoPage extends StatelessWidget {
@@ -18,42 +19,32 @@ class BuyingStockInfoPage extends StatelessWidget {
           children: [
             Text('Information for $ticker', style: TextStyle(fontSize: 24)),
             SizedBox(height: 20), 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    
-
-                    
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Bought $ticker'),
-                    ));
-                  },
-                  child: Text('Buy'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.green, 
-                  ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  _handleTrade(context, ticker);
+                },
+                child: Text('Trade'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                  textStyle: TextStyle(fontSize: 18),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    
-
-
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Sold $ticker'),
-                    ));
-                  },
-                  child: Text('Sell'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.red, 
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+void _handleTrade(BuildContext context, String ticker) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => TradePage(ticker: ticker),
+    ),
+  );
 }
+}
+
+
