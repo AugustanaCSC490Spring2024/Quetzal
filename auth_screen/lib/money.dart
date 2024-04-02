@@ -1,5 +1,5 @@
 class Money{
-  double starting_amount = 1000000;
+  double starting_amount = 100000;
 
   Money(this.starting_amount);
 
