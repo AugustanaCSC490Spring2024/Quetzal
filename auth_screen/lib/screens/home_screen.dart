@@ -1,4 +1,6 @@
 import 'package:auth_screen/search_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:auth_screen/portfolio_management.dart';
@@ -73,21 +75,56 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildHomePage() {
-    return Center(
-      child: _isLoading
-          ? CircularProgressIndicator()
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PortfolioManagementWidget(),
- 
-                ],
-              ),
+Widget _buildHomePage() {
+  return Center(
+    child: _isLoading
+        ? CircularProgressIndicator()
+        : SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PortfolioManagementWidget(),
+                SizedBox(height: 20), // Add spacing between PortfolioManagementWidget and stock list
+                Text(
+                  'Your Stocks',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10), // Add spacing below "Your Stocks"
+                _buildUserStockList(), // Display user's stocks
+              ],
             ),
-    );
-  }
+          ),
+  );
+}
+
+Widget _buildUserStockList() {
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance.collection('portfolios').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+        List<Map<String, dynamic>> userStocks = (portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : []);
+
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: userStocks.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(userStocks[index]['ticker']),
+              subtitle: Text('Quantity: ${userStocks[index]['quantity']}'),
+              // Add more information about the stock if needed
+            );
+          },
+        );
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        return CircularProgressIndicator();
+      }
+    },
+  );
+}
+
 
 
   Widget _buildGamePage() {
