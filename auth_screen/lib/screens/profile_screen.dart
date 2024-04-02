@@ -1,3 +1,4 @@
+import 'package:auth_screen/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
@@ -61,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const SignIn(),
+                      builder: (BuildContext context) => const HomePage(),
                     ),
                   );
                 });
