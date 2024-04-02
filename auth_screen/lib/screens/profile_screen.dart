@@ -59,6 +59,7 @@ class ProfileScreen extends StatelessWidget {
               onPress: () {
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed Out.");
+                   Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
