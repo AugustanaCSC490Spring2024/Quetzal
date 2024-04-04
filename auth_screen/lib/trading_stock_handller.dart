@@ -32,6 +32,8 @@ Future<void> _handleTrade(BuildContext context, String action) async {
       double totalCost = stockPrice * double.parse(quantity);
 
       String userId = FirebaseAuth.instance.currentUser!.uid;
+      final currentUser = FirebaseAuth.instance.currentUser;
+
 
       var portfolioSnapshot = await FirebaseFirestore.instance.collection('portfolios').doc(userId).get();
       var portfolioData = portfolioSnapshot.data() ?? {};
@@ -61,9 +63,11 @@ Future<void> _handleTrade(BuildContext context, String action) async {
         userFunds.deduct(totalCost);
 
         // Update user's portfolio in Firestore
+        
         await FirebaseFirestore.instance.collection('portfolios').doc(userId).set({
           'stocks': stocks,
           'money': userFunds.starting_amount,
+          'Name': currentUser?.displayName,
         }, SetOptions(merge: true));
 
         ScaffoldMessenger.of(context).showSnackBar(
