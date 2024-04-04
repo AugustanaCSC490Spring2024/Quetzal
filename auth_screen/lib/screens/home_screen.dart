@@ -23,6 +23,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_getSelectedTitle()),
+        foregroundColor: Colors.white,
+        
+   
+        
+        backgroundColor:  Color.fromRGBO(43, 61, 65, 2),
         actions: [
           SearchButton(
             onPressed: (query) {
@@ -31,8 +36,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _buildBody(),
+      body:_buildBody(),
+      backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
       bottomNavigationBar: BottomNavigationBar(
+        
+        backgroundColor: Color.fromRGBO(218, 247, 220, 2),
+        
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
           BottomNavigationBarItem(label: "Game", icon: Icon(Icons.gamepad)),
@@ -47,6 +56,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
+        
   }
 
   String _getSelectedTitle() {
