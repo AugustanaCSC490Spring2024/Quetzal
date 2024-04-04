@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:convert';
 import 'package:auth_screen/money.dart';
 import 'package:auth_screen/screens/home_screen.dart';
@@ -10,18 +12,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TradePage extends StatelessWidget {
   final String ticker;
 
-  const TradePage({Key? key, required this.ticker}) : super(key: key);
+  const TradePage({super.key, required this.ticker});
 
   @override
   Widget build(BuildContext context) {
     TextEditingController quantityController = TextEditingController();
 
-Future<void> _handleTrade(BuildContext context, String action) async {
+Future<void> handleTrade(BuildContext context, String action) async {
   String quantity = quantityController.text.trim();
 
   if (quantity.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please enter a quantity')),
+      const SnackBar(content: Text('Please enter a quantity')),
     );
     return;
   }
@@ -134,31 +136,31 @@ Future<void> _handleTrade(BuildContext context, String action) async {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Enter quantity to trade:'),
-            SizedBox(height: 20),
+            const Text('Enter quantity to trade:'),
+            const SizedBox(height: 20),
             TextField(
               controller: quantityController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Quantity',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => _handleTrade(context, 'Buying'),
-              child: Text('Buy'),
+              onPressed: () => handleTrade(context, 'Buying'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
               ),
+              child: const Text('Buy'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => _handleTrade(context, 'Selling'),
-              child: Text('Sell'),
+              onPressed: () => handleTrade(context, 'Selling'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
+              child: const Text('Sell'),
             ),
           ],
         ),

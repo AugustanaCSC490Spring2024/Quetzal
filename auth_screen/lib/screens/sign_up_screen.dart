@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +6,7 @@ import 'package:auth_screen/user_profile.dart';
 import 'package:auth_screen/password_util.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -128,14 +129,14 @@ class _SignUpState extends State<SignUp> {
             lastName.isEmpty ||
             email.isEmpty ||
             password.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Please fill in all fields'),
           ));
           return;
         }
 
         if (!isPasswordStrong(password)) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Password is not strong enough'),
           ));
           return;
@@ -147,11 +148,15 @@ class _SignUpState extends State<SignUp> {
           email: email,
         );
         user.saveToFirestore().then((_) {
-          print("User data saved to Firestore");
+          if (kDebugMode) {
+            print("User data saved to Firestore");
+          }
           FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password)
               .then((value) {
-            print("Successfully created an account!");
+            if (kDebugMode) {
+              print("Successfully created an account!");
+            }
             value.user!.updateDisplayName('$firstName $lastName');
             Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.pushReplacement(
@@ -161,7 +166,9 @@ class _SignUpState extends State<SignUp> {
               ),
             );
           }).catchError((error, stackTrace) {
-            print("Error ${error.toString()}");
+            if (kDebugMode) {
+              print("Error ${error.toString()}");
+            }
           });
         });
       },

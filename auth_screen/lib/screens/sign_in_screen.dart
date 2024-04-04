@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +7,7 @@ import 'package:auth_screen/screens/home_screen.dart';
 
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  const SignIn({super.key});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -49,33 +51,33 @@ class _SignInState extends State<SignIn> {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: 'Email',
-                hintStyle: TextStyle(color: Colors.white70),
+                hintStyle: const TextStyle(color: Colors.white70),
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
-                prefixIcon: Icon(Icons.email, color: Colors.white),
+                prefixIcon: const Icon(Icons.email, color: Colors.white),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
               ),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 15),
             TextFormField(
               controller: _passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
-                hintStyle: TextStyle(color: Colors.white70),
+                hintStyle: const TextStyle(color: Colors.white70),
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
-                prefixIcon: Icon(Icons.lock, color: Colors.white),
+                prefixIcon: const Icon(Icons.lock, color: Colors.white),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
               ),
               obscureText: true,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -102,8 +104,8 @@ class _SignInState extends State<SignIn> {
                   print("Error ${error.toString()}");
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0),
                 child: Text(
                   'Log In',
                   style: TextStyle(
@@ -131,10 +133,10 @@ class _SignInState extends State<SignIn> {
           ),
         );
       },
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             "Don't have an account? ",
             style: TextStyle(color: Colors.white),
           ),

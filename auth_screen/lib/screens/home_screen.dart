@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, avoid_print
+
 import 'package:auth_screen/search_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +9,7 @@ import 'package:auth_screen/portfolio_management.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -79,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return _buildGamePage();
       case 2:
-        return ProfileScreen();
+        return const ProfileScreen();
       default:
         return Container();
     }
@@ -87,22 +89,22 @@ class _HomePageState extends State<HomePage> {
 Widget _buildHomePage() {
   return Center(
     child: _isLoading
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 PortfolioManagementWidget(),
                  _buildUserMoney(),  // Display user's available money
-                SizedBox(height: 20), // Add spacing 
-                Text(
+                const SizedBox(height: 20), // Add spacing 
+                const Text(
                   'Your Stocks',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // Add spacing below "Your Stocks"
                 _buildUserStockList(), // Display user's stocks
-                SizedBox(height: 20), // Add spacing
+                const SizedBox(height: 20), // Add spacing
                 
               ],
             ),
@@ -120,12 +122,12 @@ Widget _buildUserMoney() {
 
         return Text(
           'Buying Power: \$${userMoney.toStringAsFixed(2)}', // Displaying user's available money
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         );
       } else if (snapshot.hasError) {
         return Text('Error: ${snapshot.error}');
       } else {
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       }
     },
   );
@@ -153,7 +155,7 @@ Widget _buildUserStockList() {
       } else if (snapshot.hasError) {
         return Text('Error: ${snapshot.error}');
       } else {
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       }
     },
   );
@@ -162,7 +164,7 @@ Widget _buildUserStockList() {
 
 
   Widget _buildGamePage() {
-    return Center(
+    return const Center(
       child: Text('Game Page'),
     );
   }
