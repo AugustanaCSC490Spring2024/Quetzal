@@ -1,10 +1,11 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +13,14 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [],
+        actions: const [],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 120,
               height: 120,
               child: Icon(Icons.person),
@@ -58,7 +59,9 @@ class ProfileScreen extends StatelessWidget {
               textColor: Colors.red,
               onPress: () {
                 FirebaseAuth.instance.signOut().then((value) {
-                  print("Signed Out.");
+                  if (kDebugMode) {
+                    print("Signed Out.");
+                  }
                    Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.pushReplacement(
                     context,
@@ -78,12 +81,12 @@ class ProfileScreen extends StatelessWidget {
 
 class ProfileMenuWidget extends StatelessWidget {
   const ProfileMenuWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.iconData,
     required this.onPress,
     this.textColor,
-  }) : super(key: key);
+  });
 
   final String title;
   final IconData iconData;
@@ -94,7 +97,7 @@ class ProfileMenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onPress,
-      leading: Container(
+      leading: SizedBox(
         width: 40,
         height: 40,
         child: Icon(

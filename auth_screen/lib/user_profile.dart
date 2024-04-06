@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class UserModel{
   final String firstName;
@@ -27,9 +28,13 @@ class UserModel{
   Future<void> saveToFirestore() async {
     try {
       await FirebaseFirestore.instance.collection('users').add(toJson());
-      print('User data saved to Firestore');
+      if (kDebugMode) {
+        print('User data saved to Firestore');
+      }
     } catch (error) {
-      print('Error saving user data to Firestore: $error');
+      if (kDebugMode) {
+        print('Error saving user data to Firestore: $error');
+      }
     }
   }
 

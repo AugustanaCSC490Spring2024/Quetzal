@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:auth_screen/buying_stock_info.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +10,13 @@ class SearchButton extends StatelessWidget {
  final Function(String) onPressed;
 
 
- const SearchButton({Key? key, required this.onPressed}) : super(key: key);
+ const SearchButton({super.key, required this.onPressed});
 
 
  @override
  Widget build(BuildContext context) {
    return IconButton(
-     icon: Icon(Icons.search),
+     icon: const Icon(Icons.search),
      onPressed: () => _showSearch(context),
    );
  }
@@ -52,7 +54,7 @@ class CustomSearch extends SearchDelegate<String> {
  @override
  Widget buildLeading(BuildContext context) {
    return IconButton(
-     icon: Icon(Icons.arrow_back),
+     icon: const Icon(Icons.arrow_back),
      onPressed: () {
        close(context, '');
      },
@@ -75,7 +77,7 @@ Widget buildSuggestions(BuildContext context) {
    future: _fetchSuggestions(query),
    builder: (context, snapshot) {
      if (snapshot.connectionState == ConnectionState.waiting) {
-       return Center(child: CircularProgressIndicator());
+       return const Center(child: CircularProgressIndicator());
      } else if (snapshot.hasError) {
        return Center(child: Text('Error: ${snapshot.error}'));
      } else {
@@ -92,7 +94,7 @@ Widget buildSuggestions(BuildContext context) {
 Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
   return ListView.separated(
     itemCount: suggestions.length,
-    separatorBuilder: (context, index) => Divider(color: Colors.grey),
+    separatorBuilder: (context, index) => const Divider(color: Colors.grey),
     itemBuilder: (context, index) {
       final suggestion = suggestions[index];
       final ticker = suggestion['ticker'];
@@ -107,7 +109,7 @@ Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
           );
         },
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black, padding: EdgeInsets.all(16.0),
+          foregroundColor: Colors.black, padding: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ), 
@@ -119,15 +121,15 @@ Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
           children: [
             Text(
               'Name: $name',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black, // Name color
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               'Ticker Symbol: $ticker',
-              style: TextStyle(color: Colors.black), // Ticker color
+              style: const TextStyle(color: Colors.black), // Ticker color
             ),
           ],
         ),
@@ -167,7 +169,7 @@ Future<List<Map<String, dynamic>>> _fetchSuggestions(String query) async {
      future: _fetchTickerInfo(query),
      builder: (context, snapshot) {
        if (snapshot.connectionState == ConnectionState.waiting) {
-         return Center(child: CircularProgressIndicator());
+         return const Center(child: CircularProgressIndicator());
        } else if (snapshot.hasError) {
          return Center(child: Text('Error: ${snapshot.error}'));
        } else {
@@ -207,7 +209,7 @@ Future<Map<String, dynamic>> _fetchTickerInfo(String ticker) async {
 
 Widget _buildTickerInfo(BuildContext context, dynamic tickerInfo) {
  if (tickerInfo == null || tickerInfo.isEmpty) {
-   return Center(child: Text('No information available for this ticker.'));
+   return const Center(child: Text('No information available for this ticker.'));
  }
 
 
@@ -218,15 +220,15 @@ Widget _buildTickerInfo(BuildContext context, dynamic tickerInfo) {
 
  return SingleChildScrollView(
    child: Container(
-     padding: EdgeInsets.all(16.0),
+     padding: const EdgeInsets.all(16.0),
      child: Column(
        crossAxisAlignment: CrossAxisAlignment.start,
        children: [
          Text(
            'Name: $name',
-           style: TextStyle(fontWeight: FontWeight.bold),
+           style: const TextStyle(fontWeight: FontWeight.bold),
          ),
-         SizedBox(height: 8.0),
+         const SizedBox(height: 8.0),
          Text('Ticker Symbol: $ticker'),
          Text('Market Cap: $marketCap'), // Display market cap
        ],
