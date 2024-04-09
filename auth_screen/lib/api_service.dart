@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class APIService {
-  final String apiKey = "K2C82obyi9y7AG7GOND0JTRt_j52UB4P";
+  final String apiKey = "hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym";
 
   Future<Map<String, dynamic>> fetchTickerInfo(String ticker) async {
     try {

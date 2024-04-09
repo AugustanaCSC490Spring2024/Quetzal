@@ -35,7 +35,7 @@ class SearchButton extends StatelessWidget {
 
 
 class CustomSearch extends SearchDelegate<String> {
- final String apiKey ="K2C82obyi9y7AG7GOND0JTRt_j52UB4P" ;
+ final String apiKey ="hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym" ;
 
 
  @override
@@ -185,7 +185,7 @@ Future<Map<String, dynamic>> _fetchTickerInfo(String ticker) async {
  final DateTime currentDate = DateTime.now();
  final String formattedDate = '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
   final response = await http.get(
-   Uri.parse('https://api.polygon.io/v3/reference/tickers/$ticker?date=$formattedDate&apiKey=K2C82obyi9y7AG7GOND0JTRt_j52UB4P'),
+   Uri.parse('https://api.polygon.io/v3/reference/tickers/$ticker?date=$formattedDate&apiKey=hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'),
  );
 
 

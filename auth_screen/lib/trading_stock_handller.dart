@@ -28,7 +28,7 @@ Future<void> handleTrade(BuildContext context, String action) async {
   }
 
   try {
-    final response = await http.get(Uri.parse('https://api.polygon.io/v2/aggs/ticker/$ticker/prev?unadjusted=true&apiKey=K2C82obyi9y7AG7GOND0JTRt_j52UB4P'));
+    final response = await http.get(Uri.parse('https://api.polygon.io/v2/aggs/ticker/$ticker/prev?unadjusted=true&apiKey=hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'));
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       double stockPrice = data['results'][0]['o']; // Fetch the open price
