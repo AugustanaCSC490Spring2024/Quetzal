@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         
    
         
-        backgroundColor:  Color.fromRGBO(43, 61, 65, 2),
+        backgroundColor:  const Color.fromRGBO(43, 61, 65, 2),
         actions: [
           SearchButton(
             onPressed: (query) {
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
       bottomNavigationBar: BottomNavigationBar(
         
-        backgroundColor: Color.fromRGBO(218, 247, 220, 2),
+        backgroundColor: const Color.fromRGBO(218, 247, 220, 2),
         
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),

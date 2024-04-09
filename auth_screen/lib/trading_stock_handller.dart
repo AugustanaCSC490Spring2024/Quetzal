@@ -79,7 +79,7 @@ Future<void> handleTrade(BuildContext context, String action) async {
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage())
+        MaterialPageRoute(builder: (context) => const HomePage())
    
       );
       } else if (action == 'Selling') {
@@ -109,7 +109,7 @@ Future<void> handleTrade(BuildContext context, String action) async {
           Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()), 
+        MaterialPageRoute(builder: (context) => const HomePage()), 
  
       );
         } else {
