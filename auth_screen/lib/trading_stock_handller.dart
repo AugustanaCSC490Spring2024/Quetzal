@@ -5,7 +5,6 @@ import 'package:auth_screen/money.dart';
 import 'package:auth_screen/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -80,7 +79,7 @@ Future<void> handleTrade(BuildContext context, String action) async {
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage())
+        MaterialPageRoute(builder: (context) => const HomePage())
    
       );
       } else if (action == 'Selling') {
@@ -110,7 +109,7 @@ Future<void> handleTrade(BuildContext context, String action) async {
           Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()), 
+        MaterialPageRoute(builder: (context) => const HomePage()), 
  
       );
         } else {
