@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/screens/home_screen.dart';
+import 'package:auth_screen/screens/forgotPasswordScreen.dart';
+
 
 
 class SignIn extends StatefulWidget {
@@ -118,6 +120,23 @@ class _SignInState extends State<SignIn> {
             ),
             const SizedBox(height: 20),
             signUpOption(),
+            const SizedBox(height: 10), // Add some space between the sign-up option and the "Forgot Password?" text
+            GestureDetector( 
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => forgotPasswordScreen()), 
+                );
+              },
+              child: const Text(
+                'Did you forget your password?' ' Forgot Password',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline, 
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -151,6 +170,7 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
+    
   }
 }
 

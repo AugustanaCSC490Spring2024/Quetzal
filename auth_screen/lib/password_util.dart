@@ -18,6 +18,6 @@ bool isPasswordStrong(String password){
     return false;
   }
 
-  return true;
+  return true; 
 
 }
