@@ -120,23 +120,8 @@ class _SignInState extends State<SignIn> {
             ),
             const SizedBox(height: 20),
             signUpOption(),
-            const SizedBox(height: 10), // Add some space between the sign-up option and the "Forgot Password?" text
-            GestureDetector( 
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => forgotPasswordScreen()), 
-                );
-              },
-              child: const Text(
-                'Did you forget your password?' ' Forgot Password',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline, 
-                ),
-              ),
-            ),
+            const SizedBox(height: 10),
+            forgotPasswordOption(),
           ],
         ),
       ),
@@ -160,11 +145,11 @@ class _SignInState extends State<SignIn> {
             style: TextStyle(color: Colors.white),
           ),
           Text(
-            'Sign Up',
+            ' Sign Up',
             style: TextStyle(
-              color: Colors.white,
+              color: Color.fromARGB(255, 52, 148, 227),
+              fontStyle: FontStyle.italic,
               fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline,
             ),
           ),
         ],
@@ -172,5 +157,34 @@ class _SignInState extends State<SignIn> {
     );
     
   }
+
+  Widget forgotPasswordOption(){
+  return GestureDetector( 
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const forgotPasswordScreen()), 
+      );
+    },
+    child: const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Did you forget your password?",
+          style: TextStyle(color: Colors.white),
+        ),
+        Text(
+          ' Forgot Password',
+          style: TextStyle(
+            color: Color.fromARGB(255, 244, 39, 39),
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 }
 
