@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields, avoid_print
 
+import 'package:auth_screen/screens/quiz.dart';
 import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:auth_screen/search_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return _buildHomePage(context);
       case 1:
-        return _buildGamePage();
+        return _buildGamePage(context);
       case 2:
         return const ProfileScreen();
       default:
@@ -193,9 +194,34 @@ Widget _buildUserMoney() {
 
 
 
-  Widget _buildGamePage() {
-    return const Center(
-      child: Text('Game Page'),
-    );
-  }
+  Widget _buildGamePage(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const QuizScreen()),
+      );
+    },
+    child: const Padding(
+      padding: EdgeInsets.only(top: 30.0), 
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Quiz',
+            style: TextStyle(
+              color: Color.fromARGB(255, 17, 1, 1),
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              decoration: TextDecoration.underline,
+              
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+      
 }
