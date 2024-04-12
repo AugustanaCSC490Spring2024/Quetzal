@@ -131,6 +131,7 @@ class _SignUpState extends State<SignUp> {
             password.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Please fill in all fields'),
+            backgroundColor: Colors.red,
           ));
           return;
         }
@@ -138,6 +139,8 @@ class _SignUpState extends State<SignUp> {
         if (!isPasswordStrong(password)) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Password is not strong enough'),
+            backgroundColor: Colors.red,
+            
           ));
           return;
         }

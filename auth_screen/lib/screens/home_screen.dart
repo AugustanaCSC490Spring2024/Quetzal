@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields, avoid_print
 
+import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:auth_screen/search_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
-        return _buildHomePage();
+        return _buildHomePage(context);
       case 1:
         return _buildGamePage();
       case 2:
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         return Container();
     }
   }
-Widget _buildHomePage() {
+Widget _buildHomePage(BuildContext context) {
   return Center(
     child: _isLoading
         ? const CircularProgressIndicator()
@@ -95,22 +96,77 @@ Widget _buildHomePage() {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 PortfolioManagementWidget(),
-                 _buildUserMoney(),  // Display user's available money
-                const SizedBox(height: 20), // Add spacing 
-                const Text(
-                  'Your Stocks',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                // Add spacing below "Your Stocks"
-                _buildUserStockList(), // Display user's stocks
-                const SizedBox(height: 20), // Add spacing
-                
+                _buildUserMoney(),  
+                const SizedBox(height: 20), 
+                _buildStockWidgets(context), 
+                const SizedBox(height: 20), 
               ],
             ),
           ),
   );
 }
+
+
+Widget _buildStockWidgets(BuildContext context) {
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance.collection('portfolios').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+        List<Map<String, dynamic>> userStocks = (portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : []);
+
+        return Column(
+          children: userStocks.map((stock) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StockDetailsPage(ticker: stock['ticker']),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10), 
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${stock['ticker']}',
+                        style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 1, 1, 1)),
+                      ),
+                      Text(
+                        'Quantity: ${stock['quantity']}',
+                        style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 1, 1, 1)),
+                      ),
+                      //ADD MORE STOCK INFO HERE MAYBE OR IN THE STOCK DETAIL SCREEN ?
+                      const SizedBox(height: 20), 
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        return const CircularProgressIndicator();
+      }
+    },
+  );
+}
+
+
+
+
+
+
+
+
+
 
 Widget _buildUserMoney() {
   return StreamBuilder<DocumentSnapshot>(
@@ -133,33 +189,6 @@ Widget _buildUserMoney() {
   );
 }
 
-Widget _buildUserStockList() {
-  return StreamBuilder<DocumentSnapshot>(
-    stream: FirebaseFirestore.instance.collection('portfolios').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
-        List<Map<String, dynamic>> userStocks = (portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : []);
-
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: userStocks.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(userStocks[index]['ticker']),
-              subtitle: Text('Quantity: ${userStocks[index]['quantity']}'),
-              // Add more information about the stock if needed
-            );
-          },
-        );
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        return const CircularProgressIndicator();
-      }
-    },
-  );
-}
 
 
 

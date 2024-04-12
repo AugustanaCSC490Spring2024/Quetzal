@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+
 
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
@@ -91,21 +91,34 @@ class _SignInState extends State<SignIn> {
                 backgroundColor: MaterialStateProperty.resolveWith<Color>((states) => Colors.white),
               ),
               onPressed: () {
-                String email = _emailController.text.trim();
-                String password = _passwordController.text.trim();
-                FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: email, password: password)
-                    .then((value) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => const HomePage(),
-                    ),
-                  );
-                }).onError((error, stackTrace) {
-                  print("Error ${error.toString()}");
-                });
-              },
+  String email = _emailController.text.trim();
+  String password = _passwordController.text.trim();
+  FirebaseAuth.instance
+    .signInWithEmailAndPassword(email: email, password: password)
+    .then((value) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (BuildContext context) => const HomePage(),
+        ),
+      );
+    }).catchError((error) {
+      if (error is FirebaseAuthException) {
+        if (error.code == 'invalid-email' || error.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Incorrect password or email'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } 
+    
+        
+      } 
+
+      
+    });
+},
+
               child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0),
                 child: Text(
