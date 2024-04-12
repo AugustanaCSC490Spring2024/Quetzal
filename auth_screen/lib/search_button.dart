@@ -111,10 +111,10 @@ Widget _buildSuggestionsList(List<Map<String, dynamic>> suggestions) {
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.black, padding: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(10.0),
           ), 
           
-          backgroundColor: Colors.blue, // Button color
+          backgroundColor:const Color.fromARGB(255, 9, 158, 106), // Button color
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -143,6 +143,7 @@ Widget _buildStockWidgets(BuildContext context) {
                       ),
                       //ADD MORE STOCK INFO HERE MAYBE OR IN THE STOCK DETAIL SCREEN ?
                       const SizedBox(height: 20), 
+                      
                     ],
                   ),
                 ),
