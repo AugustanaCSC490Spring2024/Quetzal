@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields, avoid_print
 
 import 'package:auth_screen/screens/quiz.dart';
+import 'package:auth_screen/screens/speed_run_game.dart';
 import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:auth_screen/search_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:auth_screen/portfolio_management.dart';
+
 
 
 class HomePage extends StatefulWidget {
@@ -195,33 +197,56 @@ Widget _buildUserMoney() {
 
 
   Widget _buildGamePage(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QuizScreen()),
-      );
-    },
-    child: const Padding(
-      padding: EdgeInsets.only(top: 30.0), 
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Quiz',
-            style: TextStyle(
-              color: Color.fromARGB(255, 17, 1, 1),
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              decoration: TextDecoration.underline,
-              
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QuizScreen()),
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(
+              'Quiz',
+              style: TextStyle(
+                color: Color.fromARGB(255, 17, 1, 1),
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>  Speedrun()),  // Assuming the SpeedRunScreen class exists
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(
+              'Speed Run',
+              style: TextStyle(
+                color: Color.fromARGB(255, 25, 1, 1),
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }
+
+
 
       
 }
