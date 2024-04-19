@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
-// Model for storing stock data points
 class StockPoint {
   final double close;
   final int time;
@@ -20,7 +19,6 @@ class StockPoint {
   }
 }
 
-// Widget to fetch and display line chart
 class Speedrun extends StatefulWidget {
   @override
   _SpeedrunState createState() => _SpeedrunState();
@@ -36,8 +34,8 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   Future<List<StockPoint>> fetchStockData() async {
-    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; // Make sure to use your own API key
-    String url = 'https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2020-01-09/2024-01-09?adjusted=true&apiKey=$apiKey';
+    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym';  // Use your actual API key
+    String url = 'https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2019-01-01/2019-12-31?adjusted=true&apiKey=$apiKey';
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -53,83 +51,58 @@ class _SpeedrunState extends State<Speedrun> {
     }
   }
 
-  @override //chatgpt
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('AAPL Stock Data'),
-      ),
-      body: FutureBuilder<List<StockPoint>>(
-        future: stockData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
-
-            final List<FlSpot> spots = snapshot.data!
-                .map((e) => FlSpot(
-                      e.time.toDouble(),
-                      e.close,
-                    ))
-                .toList();
-
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(show: true),
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          final DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-                          final String dateString = DateFormat('MM/dd').format(date);
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Text(dateString, style: TextStyle(color: Colors.grey, fontSize: 10)),
-                          );
-                        },
-                        interval: 1, // You may want to adjust this interval based on your data range and density
-                      ),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          return Text('\$${value.toStringAsFixed(2)}', style: TextStyle(color: Colors.grey, fontSize: 10));
-                        },
-                        interval: 10, // Adjust the interval to control how many y-axis labels you want to show
-                      ),
-                    ),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  ),
-                  borderData: FlBorderData(show: true),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: spots,
-                      isCurved: true,
-                      color:Colors.blue,
-                      barWidth: 2,
-                      isStrokeCapRound: true,
-                      dotData: FlDotData(show: true),
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                  ],
-                  minX: spots.first.x,
-                  maxX: spots.last.x,
-                  minY: spots.map((spot) => spot.y).reduce(min),
-                  maxY: spots.map((spot) => spot.y).reduce(max),
-                ),
-              ),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('AAPL Stock Data'),
+    ),
+    body: FutureBuilder<List<StockPoint>>(
+      future: stockData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
           }
-        },
-      ),
-    );
-  }
+
+          final List<FlSpot> spots = snapshot.data!
+              .map((e) => FlSpot(
+                    e.time.toDouble(),
+                    e.close,
+                  ))
+              .toList();
+
+          spots.sort((a, b) => a.x.compareTo(b.x));
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(show: false),
+                titlesData: FlTitlesData(
+                  show: false,
+                ),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: true,
+                    color:Colors.blue,
+                    barWidth: 2,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(show: false),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
+  );
+}
+
 }

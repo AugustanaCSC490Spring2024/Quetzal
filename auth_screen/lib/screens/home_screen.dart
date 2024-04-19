@@ -225,7 +225,7 @@ Widget _buildUserMoney() {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  Speedrun()),  // Assuming the SpeedRunScreen class exists
+              MaterialPageRoute(builder: (context) =>  Speedrun()),  
             );
           },
           child: const Padding(
