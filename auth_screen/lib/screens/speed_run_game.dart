@@ -37,7 +37,7 @@ class _SpeedrunState extends State<Speedrun> {
 
   Future<List<StockPoint>> fetchStockData() async {
     String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; // Use your actual API key
-    String url = 'https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2019-01-01/2024-12-31?adjusted=true&apiKey=$apiKey';
+    String url = 'https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2019-01-01/2021-12-31?adjusted=true&apiKey=$apiKey';
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -76,6 +76,10 @@ class _SpeedrunState extends State<Speedrun> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine the size of the screen
+    final screenHeight = MediaQuery.of(context).size.height;
+    final chartHeight = screenHeight / 3; // One third of the screen height
+
     return Scaffold(
       appBar: AppBar(
         title: Text('AAPL Stock Data'),
@@ -90,22 +94,25 @@ class _SpeedrunState extends State<Speedrun> {
 
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(show: false),
-                  titlesData: FlTitlesData(show: false),
-                  borderData: FlBorderData(show: false),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: displayedSpots,
-                      isCurved: true,
-                      color: Colors.blue,
-                      barWidth: 2,
-                      isStrokeCapRound: true,
-                      dotData: FlDotData(show: false),
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                  ],
+              child: SizedBox(
+                height: chartHeight, // Set the height of the chart
+                child: LineChart(
+                  LineChartData(
+                    gridData: FlGridData(show: false),
+                    titlesData: FlTitlesData(show: false),
+                    borderData: FlBorderData(show: false),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: displayedSpots,
+                        isCurved: true,
+                        color: Colors.blue,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
