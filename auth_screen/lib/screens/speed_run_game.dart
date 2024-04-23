@@ -36,7 +36,7 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   Future<List<StockPoint>> fetchStockData() async {
-    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; // Use your actual API key
+    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; 
     String url = 'https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/month/2019-01-01/2021-12-31?adjusted=true&apiKey=$apiKey';
     var response = await http.get(Uri.parse(url));
 
@@ -74,53 +74,93 @@ class _SpeedrunState extends State<Speedrun> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // Determine the size of the screen
-    final screenHeight = MediaQuery.of(context).size.height;
-    final chartHeight = screenHeight / 3; // One third of the screen height
+@override
+Widget build(BuildContext context) {
+  // Determine the size of the screen
+  final screenHeight = MediaQuery.of(context).size.height;
+  final chartHeight = screenHeight / 3; // One third of the screen height
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('AAPL Stock Data'),
-      ),
-      body: FutureBuilder<List<StockPoint>>(
-        future: stockDataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('SpeedRun'),
+    ),
+    body: FutureBuilder<List<StockPoint>>(
+      future: stockDataFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
 
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                height: chartHeight, // Set the height of the chart
-                child: LineChart(
-                  LineChartData(
-                    gridData: FlGridData(show: false),
-                    titlesData: FlTitlesData(show: false),
-                    borderData: FlBorderData(show: false),
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: displayedSpots,
-                        isCurved: true,
-                        color: Colors.blue,
-                        barWidth: 2,
-                        isStrokeCapRound: true,
-                        dotData: FlDotData(show: false),
-                        belowBarData: BarAreaData(show: false),
-                      ),
-                    ],
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: chartHeight, // Set the height of the chart
+                  child: LineChart(
+                    LineChartData(
+                      gridData: FlGridData(show: false),
+                      titlesData: FlTitlesData(show: false),
+                      borderData: FlBorderData(show: false),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: displayedSpots,
+                          isCurved: true,
+                          color: Colors.blue,
+                          barWidth: 2,
+                          isStrokeCapRound: true,
+                          dotData: FlDotData(show: false),
+                          belowBarData: BarAreaData(show: false),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
-  }
+                SizedBox(height: 20), // Space between the chart and the buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      'AAPL',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Implement what happens when you press buy
+                        print("Buy button pressed");
+                      },
+                      child: Text('Buy'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Implement what happens when you press sell
+                        print("Sell button pressed");
+                      },
+                      child: Text('Sell'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
+  );
+}
+
+
 }
