@@ -197,7 +197,8 @@ Widget _buildUserMoney() {
   Widget _buildGamePage(BuildContext context) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const QuizScreen()),
       );
