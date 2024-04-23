@@ -1,4 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +22,8 @@ class StockPoint {
 }
 
 class Speedrun extends StatefulWidget {
+  const Speedrun({super.key});
+
   @override
   _SpeedrunState createState() => _SpeedrunState();
 }
@@ -47,7 +52,7 @@ class _SpeedrunState extends State<Speedrun> {
       }));
 
       // Schedule the timer to update the chart at regular intervals
-      timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (dataIndex < points.length) {
           setState(() {
             displayedSpots.add(FlSpot(
@@ -63,7 +68,9 @@ class _SpeedrunState extends State<Speedrun> {
 
       return points;
     } else {
-      print('Failed to load stock data: ${response.body}');
+      if (kDebugMode) {
+        print('Failed to load stock data: ${response.body}');
+      }
       throw Exception('Failed to load stock data');
     }
   }
@@ -82,7 +89,7 @@ Widget build(BuildContext context) {
 
   return Scaffold(
     appBar: AppBar(
-      title: Text('SpeedRun'),
+      title: const Text('SpeedRun'),
     ),
     body: FutureBuilder<List<StockPoint>>(
       future: stockDataFuture,
@@ -100,8 +107,8 @@ Widget build(BuildContext context) {
                   height: chartHeight, // Set the height of the chart
                   child: LineChart(
                     LineChartData(
-                      gridData: FlGridData(show: false),
-                      titlesData: FlTitlesData(show: false),
+                      gridData: const FlGridData(show: false),
+                      titlesData: const FlTitlesData(show: false),
                       borderData: FlBorderData(show: false),
                       lineBarsData: [
                         LineChartBarData(
@@ -110,18 +117,18 @@ Widget build(BuildContext context) {
                           color: Colors.blue,
                           barWidth: 2,
                           isStrokeCapRound: true,
-                          dotData: FlDotData(show: false),
+                          dotData: const FlDotData(show: false),
                           belowBarData: BarAreaData(show: false),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // Space between the chart and the buttons
+                const SizedBox(height: 20), // Space between the chart and the buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'AAPL',
                       style: TextStyle(
                         fontSize: 16,
@@ -132,22 +139,26 @@ Widget build(BuildContext context) {
                     ElevatedButton(
                       onPressed: () {
                         // Implement what happens when you press buy
-                        print("Buy button pressed");
+                        if (kDebugMode) {
+                          print("Buy button pressed");
+                        }
                       },
-                      child: Text('Buy'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                       ),
+                      child: const Text('Buy'),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         // Implement what happens when you press sell
-                        print("Sell button pressed");
+                        if (kDebugMode) {
+                          print("Sell button pressed");
+                        }
                       },
-                      child: Text('Sell'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                       ),
+                      child: const Text('Sell'),
                     ),
                   ],
                 ),
@@ -155,7 +166,7 @@ Widget build(BuildContext context) {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     ),

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:auth_screen/screens/quiz.dart';
 import 'package:auth_screen/screens/speed_run_game.dart';
@@ -6,10 +8,11 @@ import 'package:auth_screen/portfolio_management.dart';
 import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -17,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           SearchButton(
             onPressed: (query) {
-              print('Search query: $query');
+              if (kDebugMode) {
+                print('Search query: $query');
+              }
             },
           ),
         ],
@@ -212,7 +217,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Speedrun()),
+                MaterialPageRoute(builder: (context) => const Speedrun()),
               );
             },
             child: const Padding(

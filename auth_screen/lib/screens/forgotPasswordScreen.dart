@@ -1,9 +1,11 @@
+// ignore_for_file: file_names, camel_case_types, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
 class forgotPasswordScreen extends StatefulWidget {
-  const forgotPasswordScreen({Key? key}) : super(key: key);
+  const forgotPasswordScreen({super.key});
 
   @override
   _forgotPasswordScreenState createState() => _forgotPasswordScreenState();
@@ -14,28 +16,28 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
 
   @override 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( 
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: const Text('Forgot Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Enter your email address to reset your password:',
               style: TextStyle(fontSize: 16.0),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 String email = _emailController.text.trim();
@@ -45,14 +47,14 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Password Reset Email Sent'),
-                        content: Text('Check your email to reset your password.'),
+                        title: const Text('Password Reset Email Sent'),
+                        content: const Text('Check your email to reset your password.'),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       ),
@@ -62,14 +64,14 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Error'),
+                        title: const Text('Error'),
                         content: Text(error.toString()),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       ),
@@ -79,21 +81,21 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Please enter your email address.'),
+                      title: const Text('Error'),
+                      content: const Text('Please enter your email address.'),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('OK'),
+                          child: const Text('OK'),
                         ),
                       ],
                     ),
                   );
                 }
               },
-              child: Text('Reset Password'),
+              child: const Text('Reset Password'),
             ),
           ],
         ),

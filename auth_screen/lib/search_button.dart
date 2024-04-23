@@ -64,30 +64,52 @@ class CustomSearch extends SearchDelegate<String> {
 
 
 
-
-
+  //list of popular stock symbols
+  final List<String> popularStocks = [
+    'AAPL', // Apple
+    'GOOGL', // Alphabet
+    'AMZN', // Amazon
+    'MSFT', // Microsoft
+    'TSLA', // Tesla
+    
+  ];
+  
 @override
 Widget buildSuggestions(BuildContext context) {
- if (query.isEmpty) {
-   return Container();
- }
-
-
- return FutureBuilder(
-   future: _fetchSuggestions(query),
-   builder: (context, snapshot) {
-     if (snapshot.connectionState == ConnectionState.waiting) {
-       return const Center(child: CircularProgressIndicator());
-     } else if (snapshot.hasError) {
-       return Center(child: Text('Error: ${snapshot.error}'));
-     } else {
-       final suggestions = snapshot.data; 
-       return suggestions != null ?
-        _buildSuggestionsList(suggestions) : Container(); 
-     }
-   },
- );
+  if (query.isEmpty) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: Future.wait(popularStocks.map(_fetchTickerInfo)),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          return _buildSuggestionsList(snapshot.data!);
+        } else {
+          return const Center(child: Text('No suggestions available.'));
+        }
+      },
+    );
+  } else {
+    return FutureBuilder(
+      future: _fetchSuggestions(query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          final suggestions = snapshot.data;
+          return suggestions != null
+              ? _buildSuggestionsList(suggestions)
+              : Container();
+        }
+      },
+    );
+  }
 }
+
 
 
 
