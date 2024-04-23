@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_getSelectedTitle()),
-        backgroundColor: const Color.fromRGBO(43, 61, 65, 1),
+        backgroundColor: Color.fromARGB(255, 203, 209, 211),
         actions: [
           SearchButton(
             onPressed: (query) {

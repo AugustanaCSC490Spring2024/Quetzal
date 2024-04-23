@@ -19,6 +19,8 @@ class StockPoint {
 }
 
 class Speedrun extends StatefulWidget {
+  const Speedrun({super.key});
+
   @override
   _SpeedrunState createState() => _SpeedrunState();
 }
@@ -121,7 +123,7 @@ Widget build(BuildContext context) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'AAPL',
                       style: TextStyle(
                         fontSize: 16,
@@ -155,7 +157,7 @@ Widget build(BuildContext context) {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     ),
