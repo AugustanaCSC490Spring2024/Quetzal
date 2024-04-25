@@ -176,7 +176,7 @@ class _SignInState extends State<SignIn> {
     onTap: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const forgotPasswordScreen()), 
+        MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()), 
       );
     },
     child: const Row(

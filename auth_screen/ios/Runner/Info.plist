@@ -6,6 +6,12 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Auth Screen</string>
+	
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your app needs access to your photo library to upload images.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Your app needs access to your camera to capture images.</string>
+
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
