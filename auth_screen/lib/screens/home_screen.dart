@@ -1,5 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api
 
+import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:auth_screen/screens/quiz.dart';
 import 'package:auth_screen/screens/speed_run_game.dart';
@@ -9,16 +9,15 @@ import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final bool _isLoading = false;
 
@@ -27,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_getSelectedTitle()),
-        backgroundColor: Color.fromARGB(255, 203, 209, 211),
+        backgroundColor: const Color.fromARGB(255, 203, 209, 211),
         actions: [
           SearchButton(
             onPressed: (query) {
@@ -191,39 +190,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildGamePage() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const QuizScreen()),
-              );
-            },
-            child: const Text(
-              'Quiz',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Speedrun()),
-              );
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Text(
-                'Speed Run',
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const QuizScreen()),
+                );
+              },
+              child: const Text(
+                'Quiz',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -233,8 +213,34 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        const Spacer(),
+        Expanded(
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Speedrun()),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  'Speed Run',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Spacer(),
+      ],
     );
   }
 }
