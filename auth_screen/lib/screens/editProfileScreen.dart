@@ -114,6 +114,8 @@
 //   } 
 // }
 
+// ignore_for_file: file_names, library_private_types_in_public_api, deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -121,6 +123,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:auth_screen/screens/ChangePasswordScreen.dart'; 
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
@@ -148,7 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (currentUser == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No current user found. Please sign in again.')),
+        const SnackBar(content: Text('No current user found. Please sign in again.')),
       );
       return;
     }
@@ -178,7 +182,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       await currentUser.updateDisplayName('${_firstNameController.text} ${_lastNameController.text}');
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile updated successfully')),
+        const SnackBar(content: Text('Profile updated successfully')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -191,7 +195,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -202,19 +206,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               TextField(
                 controller: _firstNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'First Name',
                 ),
               ),
               TextField(
                 controller: _lastNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Last Name',
                 ),
               ),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
               ),
@@ -222,7 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
               ElevatedButton(
                 onPressed: _saveChanges,
-                child: Text('Save Changes'),
+                child: const Text('Save Changes'),
               ),
 
               ElevatedButton(
@@ -230,11 +234,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ChangePasswordScreen(), 
+                      builder: (context) => const ChangePasswordScreen(), 
                     ),
                   );
                 },
-                child: Text('Change Password'),
+                child: const Text('Change Password'),
               ),
             ],
           ),

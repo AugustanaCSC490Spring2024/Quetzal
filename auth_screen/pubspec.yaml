@@ -29,10 +29,15 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
-    sdk: flutter 
+    sdk: flutter
+    
+      
+  
+  
+    
 
 
-  fl_chart: ^0.67.0 
+  fl_chart: ^0.67.0
   email_validator: ^2.1.17
 
 
@@ -69,6 +74,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/images/sim.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
