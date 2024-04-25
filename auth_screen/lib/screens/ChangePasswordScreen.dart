@@ -1,8 +1,12 @@
+// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/password_util.dart';   
 
 class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
@@ -30,7 +34,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         // If successful, change the password to the new one
         await currentUser.updatePassword(newPassword);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password changed successfully')),
+          const SnackBar(content: Text('Password changed successfully')),
         );
         Navigator.pop(context); // Go back after success
       } catch (e) {
@@ -46,7 +50,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: const Text('Change Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,7 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             children: [
               TextFormField(
                 controller: _currentPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Current Password',
                 ),
                 obscureText: true, // Hide the text for passwords
@@ -70,7 +74,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               TextFormField(
                 controller: _newPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'New Password',
                 ),
                 obscureText: true, // Hide the text for passwords
@@ -87,7 +91,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _changePassword,
-                child: Text('Change Password'), 
+                child: const Text('Change Password'), 
               ),
             ],
           ),

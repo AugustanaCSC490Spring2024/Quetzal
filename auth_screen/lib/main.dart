@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:auth_screen/screens/sign_in_screen.dart';
+//import 'package:auth_screen/screens/sign_in_screen.dart';
+import 'package:auth_screen/screens/startingscreen.dart'; 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; // Import the firebase_options.dart file.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    // Initialize Firebase with the default Firebase options for the current platform.
+    // Initialize Firebase 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -22,12 +23,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignIn(),
+      title: 'MarketSim',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      // StartingScreen
+      home: const StartingScreen(), // Change from SignIn >> StartingScreen
     );
   }
 }

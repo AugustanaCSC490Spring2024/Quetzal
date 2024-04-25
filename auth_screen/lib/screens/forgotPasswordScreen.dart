@@ -1,10 +1,12 @@
 // *******************THIS OPTION IS FOR DOING THINGS BY SENDING AN EMAIL *****************//
+// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:auth_screen/password_util.dart';   
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);  
+  const ForgotPasswordScreen({super.key});  
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState(); 
@@ -22,7 +24,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       try {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password reset email sent. Check your email.')),
+          const SnackBar(content: Text('Password reset email sent. Check your email.')),
         );
         Navigator.pop(context); // Go back after sending the reset email
       } catch (error) {
@@ -46,13 +48,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Enter your email address:',
                 style: TextStyle(fontSize: 16.0),
               ), 
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Email',
                   border: OutlineInputBorder(),
                 ),
@@ -66,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _sendResetEmail,
-                child: Text('Send Reset Email'),
+                child: const Text('Send Reset Email'),
               ),
             ],
           ),

@@ -253,6 +253,8 @@
 
 //import 'dart:ffi'; 
 
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; 
@@ -260,11 +262,13 @@ import 'package:auth_screen/screens/sign_in_screen.dart'; // Adjust as needed
 import 'package:auth_screen/screens/editProfileScreen.dart';
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -275,17 +279,17 @@ class SettingsScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                  MaterialPageRoute(builder: (context) => const EditProfileScreen()),
                 );
               },
-              child: Text("Edit Profile"),
+              child: const Text("Edit Profile"),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 _showDeleteConfirmationDialog(context);
               },
-              child: Text('Delete Profile and Account'),
+              child: const Text('Delete Profile and Account'),
             ),
           ],
         ),
@@ -298,21 +302,21 @@ class SettingsScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Profile and Account'),
-          content: Text(
+          title: const Text('Delete Profile and Account'),
+          content: const Text(
               'Are you sure you want to delete your profile and account? This action cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: Text('No'),
+              child: const Text('No'),
             ),
             TextButton(
               onPressed: () {
                 _deleteUserAccount(context); // Trigger the deletion process
               },
-              child: Text('Yes'),
+              child: const Text('Yes'),
             ),
           ],
         );
@@ -344,7 +348,7 @@ class SettingsScreen extends StatelessWidget {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => SignIn(), 
+          builder: (context) => const SignIn(), 
         ),
       );
     } catch (e) {
