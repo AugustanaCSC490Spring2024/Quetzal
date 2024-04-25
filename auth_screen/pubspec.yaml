@@ -40,9 +40,15 @@ dependencies:
   firebase_auth: ^4.17.8
   cloud_firestore: ^4.15.9
   http: ^1.2.1
+<<<<<<< HEAD
   image_picker: ^0.8.5+3 
   firebase_storage: ^11.0.19 
 
+=======
+  fl_chart: ^0.67.0
+  intl: ^0.19.0
+  flutter_countdown_timer: ^4.1.0
+>>>>>>> 1eea602a0d1d529323e31b14feff706ed58fe54b
 
 dev_dependencies:
   flutter_lints: ^3.0.2

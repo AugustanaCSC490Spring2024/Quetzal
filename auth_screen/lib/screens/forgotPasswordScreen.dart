@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:auth_screen/password_util.dart';   
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({Key? key}) : super(key: key);  
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState(); 
@@ -35,9 +35,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( 
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: const Text('Forgot Password'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
