@@ -24,11 +24,12 @@ class Speedrun extends StatefulWidget {
   const Speedrun({super.key});
 
   @override
+  
   _SpeedrunState createState() => _SpeedrunState();
 }
 
 class _SpeedrunState extends State<Speedrun> {
-  List<String> ticker = [ 'MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V', 
+  List<String> ticker = ['MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V', 
     'JPM', 'WMT', 'XOM', 'TSLA', 'UNH', 'MA', 'PG', 'JNJ', 'HD', 'MRK', 'COST', 
     'ORCL', 'BAC', 'ABBV', 'CVX', 'CRM', 'KO', 'AMD', 'NFLX', 'PEP', 'TMO', 
     'WFC', 'ADBE', 'DIS', 'MCD', 'CSCO', 'TMUS', 'ABT', 'DHR', 'CAT', 'QCOM', 
@@ -37,10 +38,11 @@ class _SpeedrunState extends State<Speedrun> {
     'SCHW', 'GS', 'SPGI', 'LOW', 'ISRG', 'HON', 'UPS', 'PGR', 'SYK', 'ELV', 
     'MU', 'BKNG', 'T', 'C', 'LRCX', 'BLK', 'LMT', 'DE', 'TJX', 'VRTX', 'BA', 
     'ADP', 'ABNB', 'CI', 'BSX', 'BMY', 'REGN', 'SBUX', 'MMC', 'PLD', 'MDLZ', 
-    'ADI', 'PANW', 'FI', 'BX', 'CVS', 'KLAC', 'KKR']; // Your ticker list
+    'ADI', 'PANW', 'FI', 'BX', 'CVS', 'KLAC', 'KKR']; // Your ticker list as before
   Random random = Random();
   late int randomIndex;
   late String selectedTicker;
+  late double currentPrice;
 
   late Future<List<StockPoint>> stockDataFuture;
   List<FlSpot> displayedSpots = [];
@@ -56,7 +58,7 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   Future<List<StockPoint>> fetchStockData() async {
-    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; // Consider securing the API key
+    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; 
     String url = 'https://api.polygon.io/v2/aggs/ticker/$selectedTicker/range/1/month/2019-01-01/2021-12-31?adjusted=true&apiKey=$apiKey';
     var response = await http.get(Uri.parse(url));
 
@@ -73,6 +75,7 @@ class _SpeedrunState extends State<Speedrun> {
               points[dataIndex].time.toDouble(),
               points[dataIndex].close,
             ));
+            currentPrice = points[dataIndex].close; // Update current price
             dataIndex++;
           });
         } else {
@@ -87,6 +90,15 @@ class _SpeedrunState extends State<Speedrun> {
       }
       throw Exception('Failed to load stock data');
     }
+  }
+
+  void showPriceSnackBar(String action) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$action at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -150,22 +162,14 @@ class _SpeedrunState extends State<Speedrun> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          if (kDebugMode) {
-                            print("Buy button pressed for $selectedTicker");
-                          }
-                        },
+                        onPressed: () => showPriceSnackBar("Buying"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
                         child: const Text('Buy'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          if (kDebugMode) {
-                            print("Sell button pressed for $selectedTicker");
-                          }
-                        },
+                        onPressed: () => showPriceSnackBar("Selling"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
