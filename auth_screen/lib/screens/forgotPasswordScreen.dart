@@ -16,7 +16,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); 
 
   Future<void> _sendResetEmail() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) { 
       final email = _emailController.text.trim();
 
       try {
