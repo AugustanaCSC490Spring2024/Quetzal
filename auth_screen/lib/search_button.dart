@@ -66,12 +66,16 @@ class CustomSearch extends SearchDelegate<String> {
 
   //list of popular stock symbols
   final List<String> popularStocks = [
-    'AAPL', // Apple
-    'GOOGL', // Alphabet
-    'AMZN', // Amazon
-    'MSFT', // Microsoft
-    'TSLA', // Tesla
-    
+    'MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V', 
+    'JPM', 'WMT', 'XOM', 'TSLA', 'UNH', 'MA', 'PG', 'JNJ', 'HD', 'MRK', 'COST', 
+    'ORCL', 'BAC', 'ABBV', 'CVX', 'CRM', 'KO', 'AMD', 'NFLX', 'PEP', 'TMO', 
+    'WFC', 'ADBE', 'DIS', 'MCD', 'CSCO', 'TMUS', 'ABT', 'DHR', 'CAT', 'QCOM', 
+    'INTU', 'GE', 'AXP', 'IBM', 'VZ', 'CMCSA', 'AMAT', 'NOW', 'TXN', 'COP', 
+    'MS', 'PM', 'PFE', 'INTC', 'UBER', 'AMGN', 'UNP', 'NKE', 'RTX', 'NEE', 
+    'SCHW', 'GS', 'SPGI', 'LOW', 'ISRG', 'HON', 'UPS', 'PGR', 'SYK', 'ELV', 
+    'MU', 'BKNG', 'T', 'C', 'LRCX', 'BLK', 'LMT', 'DE', 'TJX', 'VRTX', 'BA', 
+    'ADP', 'ABNB', 'CI', 'BSX', 'BMY', 'REGN', 'SBUX', 'MMC', 'PLD', 'MDLZ', 
+    'ADI', 'PANW', 'FI', 'BX', 'CVS', 'KLAC', 'KKR'
   ];
   
 @override
