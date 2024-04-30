@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
@@ -7,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auth_screen/user_profile.dart';
 import 'package:auth_screen/password_strength.dart';
 import 'package:auth_screen/sign_up_name.dart';
-//import 'package:auth_screen/sign_up_email.dart';
 import 'package:email_validator/email_validator.dart'; 
 
 class SignUp extends StatefulWidget {
