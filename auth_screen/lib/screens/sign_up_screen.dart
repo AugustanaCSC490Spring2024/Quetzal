@@ -8,7 +8,7 @@ import 'package:auth_screen/user_profile.dart';
 import 'package:auth_screen/password_strength.dart';
 import 'package:auth_screen/sign_up_name.dart';
 //import 'package:auth_screen/sign_up_email.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:email_validator/email_validator.dart'; 
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                 hintText: 'Password',
                 fillColor: Colors.white,
                 filled: true,
-                border: OutlineInputBorder(
+                border: OutlineInputBorder( 
                   borderRadius: BorderRadius.circular(10),
                 ),
                 suffixIcon: IconButton(
