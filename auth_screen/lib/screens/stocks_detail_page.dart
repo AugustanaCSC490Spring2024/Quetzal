@@ -1,10 +1,8 @@
 import 'package:auth_screen/api_service.dart';
 import 'package:flutter/material.dart';
 
-
 class StockDetailsPage extends StatefulWidget {
   final String ticker;
-
   const StockDetailsPage({super.key, required this.ticker});
 
   @override
@@ -12,14 +10,13 @@ class StockDetailsPage extends StatefulWidget {
 }
 
 class StockDetailsPageState extends State<StockDetailsPage> {
-  late Future<List<String>> _newsFuture;
+  late Future<List<String>> newsFuture;
 
   @override
   void initState() {
     super.initState();
-    _newsFuture = ApiService.fetchTickerNews(widget.ticker);
+    newsFuture = ApiService.fetchTickerNews(widget.ticker);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +35,7 @@ class StockDetailsPageState extends State<StockDetailsPage> {
               ),
             ),
             FutureBuilder(
-              future: _newsFuture,
+              future: newsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
