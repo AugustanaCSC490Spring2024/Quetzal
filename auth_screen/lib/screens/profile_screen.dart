@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,15 +5,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:auth_screen/screens/SettingsScreen.dart'; 
-import 'dart:io';
-import 'package:flutter/widgets.dart';  
+import 'dart:io';  
 
 
 class ProfileScreen extends StatefulWidget { 
   const ProfileScreen({super.key}); 
 
   @override
-  // ignore: library_private_types_in_public_api
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
@@ -103,7 +99,7 @@ void initState() {
                         ? NetworkImage(_profileImageUrl!)
                         : null,
                     child: _profileImageUrl == null
-                      ? const Icon(Icons.add, size: 40) // Placeholder '+' icon
+                      ? const Icon(Icons.add, size: 40)
                       : null, 
                   ),
                 ),
