@@ -1,9 +1,5 @@
-// *******************THIS OPTION IS FOR DOING THINGS BY SENDING AN EMAIL *****************//
-// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:auth_screen/password_util.dart';   
+import 'package:firebase_auth/firebase_auth.dart'; 
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});  
@@ -14,7 +10,6 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
-  //final TextEditingController _newPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); 
 
   Future<void> _sendResetEmail() async {
@@ -26,7 +21,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password reset email sent. Check your email.')),
         );
-        Navigator.pop(context); // Go back after sending the reset email
+        Navigator.pop(context);
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error sending reset email: $error')),
@@ -77,88 +72,3 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
-
-
-
-
-// ************** THIS OPTION IS FOR DOING THINGS IN APP (NOT SENDING AN EMAIL) ***************//
-
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:auth_screen/password_util.dart'; 
-
-
-// class ChangePasswordScreen extends StatefulWidget {
-//   @override
-//   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
-// }
-
-// class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-//   final TextEditingController _newPasswordController = TextEditingController();
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-//   Future<void> _changePassword() async {
-//     if (_formKey.currentState!.validate()) {
-//       final newPassword = _newPasswordController.text.trim();
-
-//       try {
-//         // Update password in Firebase
-//         await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text('Password changed successfully.')),
-//         );
-//         Navigator.pop(context); // Go back after success
-//       } catch (error) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text('Error changing password: $error')),
-//         );
-//       }
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Change Password'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Form(
-//           key: _formKey,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 'Enter your new password:',
-//                 style: TextStyle(fontSize: 16.0),
-//               ),
-//               TextFormField(
-//                 controller: _newPasswordController,
-//                 decoration: inputuation(
-//                   hintText: 'New Password',
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 obscureText: true,
-//                 validator: (value) {
-//                   if (value == null || value.isEmpty) {
-//                     return 'Please enter a new password.';
-//                   }
-//                   if (!isPasswordStrong(value)) {
-//                     return 'Password must have at least 8 characters, with uppercase, lowercase, numbers, and special characters.';
-//                   }
-//                   return null;
-//                 },
-//               ),
-//               SizedBox(height: 20),
-//               ElevatedButton(
-//                 onPressed: _changePassword,
-//                 child: Text('Change Password'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
