@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:auth_screen/password_util.dart';   
+import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:auth_screen/password_strength.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -82,8 +82,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your new password';
                   }
-                  if (!isPasswordStrong(value)) {
-                    return 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+                  if (getPasswordStrengthError(value) != null) { //must check if this is working
+                    return getPasswordStrengthError(value);
                   }
                   return null;
                 },
