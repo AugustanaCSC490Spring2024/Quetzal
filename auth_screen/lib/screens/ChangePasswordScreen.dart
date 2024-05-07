@@ -1,5 +1,3 @@
-// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:auth_screen/password_strength.dart';
