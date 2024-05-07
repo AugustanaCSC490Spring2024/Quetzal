@@ -6,17 +6,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:auth_screen/screens/SettingsScreen.dart'; 
 import 'dart:io';
+import 'package:flutter/widgets.dart';  
 
 
 class ProfileScreen extends StatefulWidget { 
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key}); 
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final ImagePicker _picker = ImagePicker();
@@ -70,9 +72,8 @@ void initState() {
       print("User not authenticated");
     }
   }
-  _loadProfileImage(); 
+  _loadProfileImage();   
 }
-
 
   @override
   Widget build(BuildContext context) {

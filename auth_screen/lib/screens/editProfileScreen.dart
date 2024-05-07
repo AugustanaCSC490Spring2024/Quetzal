@@ -189,6 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         SnackBar(content: Text('Failed to update profile: ${e.toString()}')),
       );
     }
+    Navigator.pop(context, true); 
   }
 
   @override
@@ -212,11 +213,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               TextField(
                 controller: _lastNameController,
-                decoration: const InputDecoration(
+                decoration: const InputDecoration( 
                   labelText: 'Last Name',
                 ),
               ),
-              TextField(
+              TextField( 
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -225,7 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 20),
 
               ElevatedButton(
-                onPressed: _saveChanges,
+                onPressed: _saveChanges, 
                 child: const Text('Save Changes'),
               ),
 
@@ -247,3 +248,4 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
+
