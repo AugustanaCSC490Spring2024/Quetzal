@@ -103,7 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   labelText: 'Email',
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 20), 
 
               ElevatedButton(
                 onPressed: _saveChanges, 
