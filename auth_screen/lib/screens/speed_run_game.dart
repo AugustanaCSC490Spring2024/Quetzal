@@ -73,6 +73,9 @@ class _SpeedrunState extends State<Speedrun> {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (dataIndex < points.length) {
           setState(() {
+            if (displayedSpots.length > 5) {
+              displayedSpots.removeAt(0);
+            }
             displayedSpots.add(FlSpot(
               points[dataIndex].time.toDouble(),
               points[dataIndex].close,
