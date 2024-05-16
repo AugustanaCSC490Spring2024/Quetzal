@@ -1,12 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class StockPoint {
   final double close;
@@ -26,22 +25,23 @@ class Speedrun extends StatefulWidget {
   const Speedrun({super.key});
 
   @override
-  
   _SpeedrunState createState() => _SpeedrunState();
 }
 
 class _SpeedrunState extends State<Speedrun> {
-  List<String> ticker = ['MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V', 
-    'JPM', 'WMT', 'XOM', 'TSLA', 'UNH', 'MA', 'PG', 'JNJ', 'HD', 'MRK', 'COST', 
-    'ORCL', 'BAC', 'ABBV', 'CVX', 'CRM', 'KO', 'AMD', 'NFLX', 'PEP', 'TMO', 
-    'WFC', 'ADBE', 'DIS', 'MCD', 'CSCO', 'TMUS', 'ABT', 'DHR', 'CAT', 'QCOM', 
-    'INTU', 'GE', 'AXP', 'IBM', 'VZ', 'CMCSA', 'AMAT', 'NOW', 'TXN', 'COP', 
-    'MS', 'PM', 'PFE', 'INTC', 'UBER', 'AMGN', 'UNP', 'NKE', 'RTX', 'NEE', 
-    'SCHW', 'GS', 'SPGI', 'LOW', 'ISRG', 'HON', 'UPS', 'PGR', 'SYK', 'ELV', 
-    'MU', 'BKNG', 'T', 'C', 'LRCX', 'BLK', 'LMT', 'DE', 'TJX', 'VRTX', 'BA', 
-    'ADP', 'ABNB', 'CI', 'BSX', 'BMY', 'REGN', 'SBUX', 'MMC', 'PLD', 'MDLZ', 
-    'ADI', 'PANW', 'FI', 'BX', 'CVS', 'KLAC', 'KKR']; // Your ticker list as before
-  Random random = Random();
+  final List<String> ticker = [
+    'MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V',
+    'JPM', 'WMT', 'XOM', 'TSLA', 'UNH', 'MA', 'PG', 'JNJ', 'HD', 'MRK', 'COST',
+    'ORCL', 'BAC', 'ABBV', 'CVX', 'CRM', 'KO', 'AMD', 'NFLX', 'PEP', 'TMO',
+    'WFC', 'ADBE', 'DIS', 'MCD', 'CSCO', 'TMUS', 'ABT', 'DHR', 'CAT', 'QCOM',
+    'INTU', 'GE', 'AXP', 'IBM', 'VZ', 'CMCSA', 'AMAT', 'NOW', 'TXN', 'COP',
+    'MS', 'PM', 'PFE', 'INTC', 'UBER', 'AMGN', 'UNP', 'NKE', 'RTX', 'NEE',
+    'SCHW', 'GS', 'SPGI', 'LOW', 'ISRG', 'HON', 'UPS', 'PGR', 'SYK', 'ELV',
+    'MU', 'BKNG', 'T', 'C', 'LRCX', 'BLK', 'LMT', 'DE', 'TJX', 'VRTX', 'BA',
+    'ADP', 'ABNB', 'CI', 'BSX', 'BMY', 'REGN', 'SBUX', 'MMC', 'PLD', 'MDLZ',
+    'ADI', 'PANW', 'FI', 'BX', 'CVS', 'KLAC', 'KKR'
+  ];
+  final Random random = Random();
   late int randomIndex;
   late String selectedTicker;
   late double currentPrice;
@@ -50,6 +50,11 @@ class _SpeedrunState extends State<Speedrun> {
   List<FlSpot> displayedSpots = [];
   Timer? timer;
   int dataIndex = 0;
+  late double chartHeight;
+
+  double? buyPrice;
+  bool hasBought = false;
+  double points = 0;
 
   @override
   void initState() {
@@ -60,34 +65,20 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   Future<List<StockPoint>> fetchStockData() async {
-    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym'; 
-    String url = 'https://api.polygon.io/v2/aggs/ticker/$selectedTicker/range/1/month/2019-01-01/2021-12-31?adjusted=true&apiKey=$apiKey';
+    String apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym';
+    String url =
+        'https://api.polygon.io/v2/aggs/ticker/$selectedTicker/range/1/month/2019-01-01/2021-12-31?adjusted=true&apiKey=$apiKey';
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      List<StockPoint> points = List<StockPoint>.from(data['results'].map((result) {
-        return StockPoint.fromJson(result);
-      }));
+      List<StockPoint> points = List<StockPoint>.from(
+        data['results'].map((result) {
+          return StockPoint.fromJson(result);
+        }),
+      );
 
-      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (dataIndex < points.length) {
-          setState(() {
-            if (displayedSpots.length > 5) {
-              displayedSpots.removeAt(0);
-            }
-            displayedSpots.add(FlSpot(
-              points[dataIndex].time.toDouble(),
-              points[dataIndex].close,
-            ));
-            currentPrice = points[dataIndex].close; // Update current price
-            dataIndex++;
-          });
-        } else {
-          timer.cancel();
-        }
-      });
-
+      startDataTimer(points);
       return points;
     } else {
       if (kDebugMode) {
@@ -97,13 +88,65 @@ class _SpeedrunState extends State<Speedrun> {
     }
   }
 
-  void showPriceSnackBar(String action) {
+  void startDataTimer(List<StockPoint> points) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (dataIndex < points.length) {
+        setState(() {
+          if (displayedSpots.length > 5) {
+            displayedSpots.removeAt(0);
+          }
+          displayedSpots.add(
+            FlSpot(
+              points[dataIndex].time.toDouble(),
+              points[dataIndex].close,
+            ),
+          );
+          currentPrice = points[dataIndex].close;
+          dataIndex++;
+        });
+      } else {
+        timer.cancel();
+        endGame();
+      }
+    });
+  }
+
+  void endGame() {
+    if (hasBought) {
+      showSnackBar("The visualization has ended. You can no longer trade.");
+    }
+  }
+
+  void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$action at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker'),
+        content: Text(message),
         duration: const Duration(seconds: 2),
       ),
     );
+  }
+
+  void handleBuy() {
+    if (!hasBought) {
+      buyPrice = currentPrice;
+      hasBought = true;
+      showSnackBar("Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker");
+    } else {
+      showSnackBar("You have already bought $selectedTicker at \$${buyPrice!.toStringAsFixed(2)}.");
+    }
+  }
+
+  void handleSell() {
+    if (hasBought) {
+      double sellPrice = currentPrice;
+      double profit = sellPrice - buyPrice!;
+      points += profit / 10;
+      hasBought = false;
+      showSnackBar(
+          "Sold at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. ${profit >= 0 ? 'Profit' : 'Loss'}: \$${profit.toStringAsFixed(2)}");
+    } else {
+      showSnackBar("You need to buy $selectedTicker first.");
+    }
   }
 
   @override
@@ -114,8 +157,7 @@ class _SpeedrunState extends State<Speedrun> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final chartHeight = screenHeight / 3;
+    chartHeight = MediaQuery.of(context).size.height / 3;
 
     return Scaffold(
       appBar: AppBar(
@@ -167,20 +209,29 @@ class _SpeedrunState extends State<Speedrun> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () => showPriceSnackBar("Buying"),
+                        onPressed: handleBuy,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
                         child: const Text('Buy'),
                       ),
                       ElevatedButton(
-                        onPressed: () => showPriceSnackBar("Selling"),
+                        onPressed: handleSell,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
                         child: const Text('Sell'),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Points: ${points.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
                 ],
               ),
