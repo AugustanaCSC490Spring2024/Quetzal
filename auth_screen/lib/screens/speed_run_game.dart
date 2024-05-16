@@ -54,6 +54,7 @@ class _SpeedrunState extends State<Speedrun> {
 
   double? buyPrice;
   bool hasBought = false;
+  bool isVisualizationEnded = false;
   double points = 0;
 
   @override
@@ -89,6 +90,7 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   void startDataTimer(List<StockPoint> points) {
+    isVisualizationEnded = false;
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (dataIndex < points.length) {
         setState(() {
@@ -112,6 +114,7 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   void endGame() {
+    isVisualizationEnded = true;
     if (hasBought) {
       showSnackBar("The visualization has ended. You can no longer trade.");
     }
@@ -127,6 +130,10 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   void handleBuy() {
+    if (isVisualizationEnded) {
+      showSnackBar("You cannot buy after the visualization has ended.");
+      return;
+    }
     if (!hasBought) {
       buyPrice = currentPrice;
       hasBought = true;
@@ -137,6 +144,10 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   void handleSell() {
+    if (isVisualizationEnded) {
+      showSnackBar("You cannot sell after the visualization has ended.");
+      return;
+    }
     if (hasBought) {
       double sellPrice = currentPrice;
       double profit = sellPrice - buyPrice!;
