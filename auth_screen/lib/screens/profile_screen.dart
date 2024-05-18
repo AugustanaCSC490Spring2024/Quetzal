@@ -374,4 +374,5 @@ class ProfileMenuWidget extends StatelessWidget {
       ),
     );
   }
+  }
 }  

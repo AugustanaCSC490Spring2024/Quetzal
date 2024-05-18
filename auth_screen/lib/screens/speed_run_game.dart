@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -6,6 +8,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StockPoint {
   final double close;
@@ -55,7 +59,7 @@ class _SpeedrunState extends State<Speedrun> {
   double? buyPrice;
   bool hasBought = false;
   bool isVisualizationEnded = false;
-  double points = 0;
+  double gpoints = 0;
 
   @override
   void initState() {
@@ -118,6 +122,7 @@ class _SpeedrunState extends State<Speedrun> {
     if (hasBought) {
       showSnackBar("The visualization has ended. You can no longer trade.");
     }
+    updateUserPointsInFirebase();
   }
 
   void showSnackBar(String message) {
@@ -151,12 +156,51 @@ class _SpeedrunState extends State<Speedrun> {
     if (hasBought) {
       double sellPrice = currentPrice;
       double profit = sellPrice - buyPrice!;
-      points += profit / 10;
+      gpoints += profit / 10;
       hasBought = false;
       showSnackBar(
           "Sold at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. ${profit >= 0 ? 'Profit' : 'Loss'}: \$${profit.toStringAsFixed(2)}");
     } else {
       showSnackBar("You need to buy $selectedTicker first.");
+    }
+  }
+
+  Future<void> updateUserPointsInFirebase() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentReference portfolioDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('portfolio')
+          .doc('details');
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(portfolioDocRef);
+        if (snapshot.exists) {
+          double currentPoints = (snapshot.get('points') ?? 0).toDouble();
+          double newPoints = currentPoints + gpoints;
+          if (kDebugMode) {
+            print('Current points: $currentPoints, New points: $newPoints');
+          }
+          transaction.update(portfolioDocRef, {'points': newPoints});
+        } else {
+          if (kDebugMode) {
+            print('Document does not exist.');
+          }
+        }
+      }).then((_) {
+        if (kDebugMode) {
+          print('Points updated successfully');
+        }
+        showSnackBar("Points updated in Firebase: ${gpoints.toStringAsFixed(2)}");
+      }).catchError((error) {
+        if (kDebugMode) {
+          print('Transaction failed: $error');
+        }
+        showSnackBar("Failed to update points in Firebase.");
+      });
+    } else {
+      showSnackBar("User not logged in.");
     }
   }
 
@@ -237,7 +281,7 @@ class _SpeedrunState extends State<Speedrun> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Points: ${points.toStringAsFixed(2)}',
+                    'Points: ${gpoints.toStringAsFixed(2)}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
