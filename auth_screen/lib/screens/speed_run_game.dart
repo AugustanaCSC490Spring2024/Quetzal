@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class StockPoint {
   final double close;
@@ -27,10 +29,10 @@ class Speedrun extends StatefulWidget {
   const Speedrun({super.key});
 
   @override
-  _SpeedrunState createState() => _SpeedrunState();
+  SpeedrunState createState() => SpeedrunState();
 }
 
-class _SpeedrunState extends State<Speedrun> {
+class SpeedrunState extends State<Speedrun> {
   final List<String> ticker = [
     'MSFT', 'AAPL', 'NVDA', 'GOOG', 'AMZN', 'META', 'BRK.B', 'LLY', 'AVGO', 'V',
     'JPM', 'WMT', 'XOM', 'TSLA', 'UNH', 'MA', 'PG', 'JNJ', 'HD', 'MRK', 'COST',
@@ -84,9 +86,7 @@ class _SpeedrunState extends State<Speedrun> {
       startDataTimer(points);
       return points;
     } else {
-      if (kDebugMode) {
-        print('Failed to load stock data: ${response.body}');
-      }
+      logger.e('Failed to load stock data: ${response.body}');
       throw Exception('Failed to load stock data');
     }
   }
@@ -124,12 +124,14 @@ class _SpeedrunState extends State<Speedrun> {
   }
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void handleBuy() {
@@ -158,8 +160,40 @@ class _SpeedrunState extends State<Speedrun> {
       hasBought = false;
       showSnackBar(
           "Sold at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. ${profit >= 0 ? 'Profit' : 'Loss'}: \$${profit.toStringAsFixed(2)}");
+      addProfitToUserMoney(profit);
     } else {
       showSnackBar("You need to buy $selectedTicker first.");
+    }
+  }
+
+  Future<void> addProfitToUserMoney(double profit) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentReference portfolioDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('portfolio')
+          .doc('details');
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(portfolioDocRef);
+        if (snapshot.exists) {
+          double currentMoney = (snapshot.get('money') ?? 0).toDouble();
+          double newMoney = currentMoney + profit;
+          logger.i('Current money: $currentMoney, New money: $newMoney');
+          transaction.update(portfolioDocRef, {'money': newMoney});
+        } else {
+          logger.w('Document does not exist.');
+        }
+      }).then((_) {
+        logger.i('Money updated successfully');
+        showSnackBar("Money updated in Firebase: ${profit.toStringAsFixed(2)}");
+      }).catchError((error) {
+        logger.e('Transaction failed: $error');
+        showSnackBar("Failed to update money in Firebase.");
+      });
+    } else {
+      showSnackBar("User not logged in.");
     }
   }
 
@@ -177,16 +211,16 @@ class _SpeedrunState extends State<Speedrun> {
         if (snapshot.exists) {
           double currentPoints = (snapshot.get('points') ?? 0).toDouble();
           double newPoints = currentPoints + gpoints;
-          print('Current points: $currentPoints, New points: $newPoints');
+          logger.i('Current points: $currentPoints, New points: $newPoints');
           transaction.update(portfolioDocRef, {'points': newPoints});
         } else {
-          print('Document does not exist.');
+          logger.w('Document does not exist.');
         }
       }).then((_) {
-        print('Points updated successfully');
+        logger.i('Points updated successfully');
         showSnackBar("Points updated in Firebase: ${gpoints.toStringAsFixed(2)}");
       }).catchError((error) {
-        print('Transaction failed: $error');
+        logger.e('Transaction failed: $error');
         showSnackBar("Failed to update points in Firebase.");
       });
     } else {

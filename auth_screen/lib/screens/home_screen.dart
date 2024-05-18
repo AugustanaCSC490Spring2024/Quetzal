@@ -151,6 +151,10 @@ class HomePageState extends State<HomePage> {
                         'Quantity: ${stock['quantity']}',
                         style: const TextStyle(fontSize: 20, color: Colors.black),
                       ),
+                      Text(
+                        'Equity: \$${stock['equity'].toStringAsFixed(2)}',
+                        style: const TextStyle(fontSize: 20, color: Colors.black),
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),

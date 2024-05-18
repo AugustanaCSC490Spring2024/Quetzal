@@ -52,6 +52,7 @@ dependencies:
   http: ^1.2.1
   image_picker: ^0.8.5+3 
   firebase_storage: ^11.0.19 
+  logger: ^2.3.0
 
 
 dev_dependencies:

@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class TradePage extends StatefulWidget {
   final String ticker;
@@ -89,7 +92,7 @@ class TradePageState extends State<TradePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () => handleTrade(context, 'Buying'),
+                        onPressed: () => handleTrade('Buying'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
@@ -97,7 +100,7 @@ class TradePageState extends State<TradePage> {
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton(
-                        onPressed: () => handleTrade(context, 'Selling'),
+                        onPressed: () => handleTrade('Selling'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
@@ -111,7 +114,7 @@ class TradePageState extends State<TradePage> {
     );
   }
 
-  Future<void> handleTrade(BuildContext context, String action) async {
+  Future<void> handleTrade(String action) async {
     String quantity = quantityController.text.trim();
     String price = priceController.text.trim();
 
@@ -173,8 +176,9 @@ class TradePageState extends State<TradePage> {
 
           if (existingStockIndex != -1) {
             stocks[existingStockIndex]['quantity'] += requestedShares;
+            stocks[existingStockIndex]['equity'] = stocks[existingStockIndex]['quantity'] * stockPrice;
           } else {
-            stocks.add({'ticker': widget.ticker, 'quantity': requestedShares});
+            stocks.add({'ticker': widget.ticker, 'quantity': requestedShares, 'equity': requestedShares * stockPrice});
           }
 
           userFunds.deduct(totalCost);
@@ -187,6 +191,8 @@ class TradePageState extends State<TradePage> {
             stocks[existingStockIndex]['quantity'] -= parsedQuantity;
             if (stocks[existingStockIndex]['quantity'] == 0) {
               stocks.removeAt(existingStockIndex);
+            } else {
+              stocks[existingStockIndex]['equity'] = stocks[existingStockIndex]['quantity'] * stockPrice;
             }
 
             userFunds.add(earnings);
@@ -212,11 +218,6 @@ class TradePageState extends State<TradePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${action == 'Buying' ? 'Bought' : 'Sold'} $requestedShares ${widget.ticker}')),
           );
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage())
-          );
         }
 
       } else {
@@ -224,9 +225,9 @@ class TradePageState extends State<TradePage> {
       }
     } catch (error) {
       if (mounted) {
-        print('Error handling trade: $error');
+        logger.e('Error handling trade: $error');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid input format')),
+          const SnackBar(content: Text('Invalid input format')),
         );
       }
     } finally {
