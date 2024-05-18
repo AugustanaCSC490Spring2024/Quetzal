@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +5,7 @@ import 'package:auth_screen/screens/home_screen.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:auth_screen/screens/forgotPasswordScreen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-
+ 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
@@ -63,8 +61,8 @@ Widget build(BuildContext context) {
               logInButton(),
               const SizedBox(height: 20),
               signUpOptionWithBackground(),
-              const SizedBox(height: 10),
-              forgotPasswordCentered(),
+              const SizedBox(height: 10), 
+              ForgotPasswordScreen(), 
             ],
           ),
         ),
@@ -170,7 +168,7 @@ Widget AnimatedText(String text) {
       padding: const EdgeInsets.all(8),
       child: TextButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SignUp()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const SignUpScreen()));
         },
         child: RichText(
   text: const TextSpan(
@@ -191,29 +189,31 @@ Widget AnimatedText(String text) {
     );
   }
 
-
-  Widget forgotPasswordCentered() {
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
-        },
-        child: RichText(
-            text: const TextSpan(
-            style: TextStyle( // Default text style for the entire block
-              fontSize: 16.0,
-              color: Colors.black,
-            ),
-            children: <TextSpan>[
-              TextSpan(text: "Did you forget your password? "), // Normal text
-              TextSpan(
-                text: 'Forgot Password.', // Bold part
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            
-            ],
+  Widget signUpOption() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const SignUpScreen(),  
           ),
-        ),
+        );
+      },
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Don't have an account? ",
+            style: TextStyle(color: Colors.white),
+          ),
+          Text(
+            ' Sign Up',
+            style: TextStyle(
+              color: Color.fromARGB(255, 52, 148, 227),
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
     
