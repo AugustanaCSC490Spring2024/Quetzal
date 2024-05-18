@@ -146,7 +146,7 @@ class _SignInState extends State<SignIn> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext context) => const SignUp(),
+            builder: (BuildContext context) => const SignUpScreen(),  
           ),
         );
       },
