@@ -59,12 +59,12 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen> with SingleTi
                 fontSize: 32,  // Larger font size
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                letterSpacing: 2,  // Spacing between letters
+                letterSpacing: 4,  // Spacing between letters
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            Image.asset("assets/icon/MARKETSIM1024_1024.png", width: 180),
+            Image.asset("assets/icon/MSIM1024_1024.png", width: 180),
             FadeTransition(
               opacity: _fadeAnimation,
               child: const Text(

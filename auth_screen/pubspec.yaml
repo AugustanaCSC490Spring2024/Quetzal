@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  animated_text_kit: ^4.2.1
     
       
   
@@ -70,7 +72,7 @@ dev_dependencies:
 flutter_icons:
   android: true 
   ios: true
-  image_path: "assets/icon/MARKETSIM1024_1024.png"  
+  image_path: "assets/icon/MSIM1024_1024.png"  
   #remove_alpha_ios: true
 
 
@@ -83,8 +85,8 @@ flutter_icons:
 flutter:
   assets:
     - assets/images/sim.jpg
-  
-    - assets/icon/MARKETSIM1024_1024.png
+    - assets/images/Growing Stock Index.gif
+    - assets/icon/MSIM1024_1024.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
