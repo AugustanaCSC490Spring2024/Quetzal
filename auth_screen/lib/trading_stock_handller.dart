@@ -178,6 +178,7 @@ class TradePageState extends State<TradePage> {
             'stocks': stocks,
             'money': userFunds.starting_amount,
             'Name': currentUser?.displayName,
+            'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
           }, SetOptions(merge: true));
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -198,11 +199,6 @@ class TradePageState extends State<TradePage> {
             stocks[existingStockIndex]['quantity'] -= parsedQuantity;
 
             userFunds.add(earnings);
-
-            await portfolioDocRef.set({
-              'stocks': stocks,
-              'money': userFunds.starting_amount,
-            }, SetOptions(merge: true));
 
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Sold $parsedQuantity ${widget.ticker}')),
