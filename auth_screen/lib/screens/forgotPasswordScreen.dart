@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; 
 
@@ -23,8 +25,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         );
         Navigator.pop(context);
       } catch (error) {
+        String errorMessage = 'Failed to send reset email.';
+        if (error is FirebaseAuthException) {
+          switch (error.code) {
+            case 'invalid-email':
+              errorMessage = 'The email address is not valid.';
+              break;
+            case 'user-not-found':
+              errorMessage = 'No user found with this email address.';
+              break;
+            default:
+              errorMessage = 'An unexpected error occurred. Please try again.';
+              break;
+          }
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error sending reset email: $error')),
+          SnackBar(content: Text(errorMessage)),
         );
       }
     }
@@ -35,6 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold( 
       appBar: AppBar(
         title: const Text('Forgot Password'),
+        backgroundColor: Colors.blueGrey,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,9 +78,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _sendResetEmail,
-                child: const Text('Send Reset Email'),
+               Center(
+                child: ElevatedButton(
+                  onPressed: _sendResetEmail,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey, // Background color
+                    foregroundColor: Colors.white, // Text and icon color
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: const Text('Reset'),
+                ),
               ),
             ],
           ),

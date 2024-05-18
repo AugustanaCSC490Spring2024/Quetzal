@@ -119,7 +119,7 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
               ),
-              obscureText: !_passwordVisible, // switch to visible
+              obscureText: true, // switch to visible
             ),        
 
             const SizedBox(
