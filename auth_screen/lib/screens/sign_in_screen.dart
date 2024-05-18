@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +5,7 @@ import 'package:auth_screen/screens/home_screen.dart';
 import 'package:auth_screen/screens/sign_up_screen.dart';
 import 'package:auth_screen/screens/forgotPasswordScreen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-
+ 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
