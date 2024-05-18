@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
@@ -177,16 +179,24 @@ class _SpeedrunState extends State<Speedrun> {
         if (snapshot.exists) {
           double currentPoints = (snapshot.get('points') ?? 0).toDouble();
           double newPoints = currentPoints + gpoints;
-          print('Current points: $currentPoints, New points: $newPoints');
+          if (kDebugMode) {
+            print('Current points: $currentPoints, New points: $newPoints');
+          }
           transaction.update(portfolioDocRef, {'points': newPoints});
         } else {
-          print('Document does not exist.');
+          if (kDebugMode) {
+            print('Document does not exist.');
+          }
         }
       }).then((_) {
-        print('Points updated successfully');
+        if (kDebugMode) {
+          print('Points updated successfully');
+        }
         showSnackBar("Points updated in Firebase: ${gpoints.toStringAsFixed(2)}");
       }).catchError((error) {
-        print('Transaction failed: $error');
+        if (kDebugMode) {
+          print('Transaction failed: $error');
+        }
         showSnackBar("Failed to update points in Firebase.");
       });
     } else {

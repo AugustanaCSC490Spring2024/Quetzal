@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:auth_screen/money.dart';
 import 'package:auth_screen/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -218,9 +221,11 @@ class TradePageState extends State<TradePage> {
         throw Exception('Failed to fetch stock price: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error handling trade: $error');
+      if (kDebugMode) {
+        print('Error handling trade: $error');
+      }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid input format')),
+        const SnackBar(content: Text('Invalid input format')),
       );
     } finally {
       setState(() {
