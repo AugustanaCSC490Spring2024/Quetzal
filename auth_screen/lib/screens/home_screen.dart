@@ -1,4 +1,4 @@
-
+import 'package:auth_screen/screens/leaderboard.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/profile_screen.dart';
 import 'package:auth_screen/screens/quiz.dart';
@@ -105,8 +105,10 @@ class HomePageState extends State<HomePage> {
   Widget _buildStockWidgets() {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('portfolios')
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('portfolio')
+          .doc('details')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -164,8 +166,10 @@ class HomePageState extends State<HomePage> {
   Widget _buildUserMoney() {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('portfolios')
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('portfolio')
+          .doc('details')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -240,7 +244,36 @@ class HomePageState extends State<HomePage> {
           ),
         ),
         const Spacer(),
+        Expanded(
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                _navigateToLeaderboard();
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  'Leaderboard',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Spacer(),
       ],
+    );
+  }
+
+  void _navigateToLeaderboard() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Leaderboard()),
     );
   }
 }

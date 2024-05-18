@@ -12,10 +12,10 @@ class TradePage extends StatefulWidget {
   const TradePage({super.key, required this.ticker});
 
   @override
-  _TradePageState createState() => _TradePageState();
+  TradePageState createState() => TradePageState();
 }
 
-class _TradePageState extends State<TradePage> {
+class TradePageState extends State<TradePage> {
   TextEditingController quantityController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   bool tradeByQuantity = true;
@@ -146,7 +146,12 @@ class _TradePageState extends State<TradePage> {
         String userId = FirebaseAuth.instance.currentUser!.uid;
         final currentUser = FirebaseAuth.instance.currentUser;
 
-        var portfolioSnapshot = await FirebaseFirestore.instance.collection('portfolios').doc(userId).get();
+        var portfolioDocRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('portfolio')
+            .doc('details');
+        var portfolioSnapshot = await portfolioDocRef.get();
         var portfolioData = portfolioSnapshot.data() ?? {};
 
         Money userFunds = Money(portfolioData.containsKey('money') ? portfolioData['money'] : 100000.0);
@@ -169,7 +174,7 @@ class _TradePageState extends State<TradePage> {
 
           userFunds.deduct(totalCost);
 
-          await FirebaseFirestore.instance.collection('portfolios').doc(userId).set({
+          await portfolioDocRef.set({
             'stocks': stocks,
             'money': userFunds.starting_amount,
             'Name': currentUser?.displayName,
@@ -194,7 +199,7 @@ class _TradePageState extends State<TradePage> {
 
             userFunds.add(earnings);
 
-            await FirebaseFirestore.instance.collection('portfolios').doc(userId).set({
+            await portfolioDocRef.set({
               'stocks': stocks,
               'money': userFunds.starting_amount,
             }, SetOptions(merge: true));
