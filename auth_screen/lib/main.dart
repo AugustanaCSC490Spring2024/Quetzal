@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
       ),
       // StartingScreen
       // // Change from SignIn >> StartingScreen
-      home: const DynamicSplashScreen(),
+      //home: const DynamicSplashScreen(),
     );
   }
 }
+ 

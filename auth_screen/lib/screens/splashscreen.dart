@@ -1,7 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:auth_screen/screens/sign_in_screen.dart';  // Your main sign-in screen
+import 'package:auth_screen/screens/sign_in_screen.dart';
 
 class DynamicSplashScreen extends StatefulWidget {
   const DynamicSplashScreen({super.key});
@@ -15,7 +13,7 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen> with SingleTi
   late Animation<double> _fadeAnimation;
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     _controller = AnimationController(
       duration: const Duration(seconds: 1), 
@@ -33,8 +31,8 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen> with SingleTi
   }
 
   Future<void> loadData() async {
-    await Future.delayed(const Duration(seconds: 5));  // Adjusted for fade animation
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignIn()));  // Navigate to the SignIn screen
+    await Future.delayed(const Duration(seconds: 5));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignIn()));
   }
 
   @override
@@ -56,17 +54,17 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen> with SingleTi
             const Text(
               'MARKETSIM',
               style: TextStyle(
-                fontSize: 32,  // Larger font size
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                letterSpacing: 4,  // Spacing between letters
+                letterSpacing: 4,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
             Image.asset("assets/icon/MSIM1024_1024.png", width: 180),
             FadeTransition(
-              opacity: _fadeAnimation,
+              opacity: _fadeAnimation, 
               child: const Text(
                 'Trade Smart',
                 style: TextStyle(fontSize: 16, color: Colors.grey),

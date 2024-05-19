@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-import 'package:auth_screen/user_profile.dart'; // Import your UserModel class
-import 'sign_up_screen.dart'; // Import your SignUpScreen class
+import 'package:auth_screen/user_profile.dart'; 
+import 'sign_up_screen.dart'; 
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _profileImageUrl = userModel.profileImageUrl ?? "";
         });
       }    
-    }
+    } 
   } 
 
   Future<void> _uploadProfilePicture() async {
