@@ -88,6 +88,7 @@ flutter:
     - assets/images/sim.jpg
     - assets/images/Growing Stock Index.gif
     - assets/icon/MSIM1024_1024.png
+    - assets/images/fin.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
