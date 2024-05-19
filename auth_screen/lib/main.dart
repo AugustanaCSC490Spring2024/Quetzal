@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart'; 
 import 'package:flutter/material.dart';
 //import 'package:auth_screen/screens/sign_in_screen.dart';
 //import 'package:auth_screen/screens/startingscreen.dart'; 
@@ -12,7 +12,7 @@ void main() async {
     // Initialize Firebase 
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-    );
+    ); 
     runApp(const MyApp());
   } catch (e) {
     if (kDebugMode) {
@@ -37,6 +37,6 @@ class MyApp extends StatelessWidget {
       // // Change from SignIn >> StartingScreen
       home: const DynamicSplashScreen(),
     );
-  } 
+  }  
 }  
  

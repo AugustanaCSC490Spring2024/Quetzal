@@ -6,7 +6,7 @@ class UserModel {
   final String lastName;
   final String email;
   final String? profileImageUrl;
-
+ 
   UserModel({ 
     required this.firstName,
     required this.lastName,
