@@ -103,95 +103,100 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildStockWidgets() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('portfolio')
-          .doc('details')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('portfolio')
+        .doc('details')
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
 
-        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
-        List<Map<String, dynamic>> userStocks =
-            portfolioData.containsKey('stocks')
-                ? List<Map<String, dynamic>>.from(portfolioData['stocks'])
-                : [];
+      var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+      List<Map<String, dynamic>> userStocks = portfolioData.containsKey('stocks')
+          ? List<Map<String, dynamic>>.from(portfolioData['stocks'])
+          : [];
 
-        return Column(
-          children: userStocks.map((stock) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StockDetailsPage(ticker: stock['ticker']),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${stock['ticker']}',
-                        style: const TextStyle(fontSize: 20, color: Colors.black),
-                      ),
-                      Text(
-                        'Quantity: ${stock['quantity']}',
-                        style: const TextStyle(fontSize: 20, color: Colors.black),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+      return Column(
+        children: userStocks.map((stock) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StockDetailsPage(ticker: stock['ticker']),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${stock['ticker']}',
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    Text(
+                      'Quantity: ${stock['quantity']}',
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    Text(
+                      'Equity: \$${(stock['equity'] as num?)?.toDouble().toStringAsFixed(2) ?? '0.00'}',
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-            );
-          }).toList(),
-        );
-      },
-    );
-  }
+            ),
+          );
+        }).toList(),
+      );
+    },
+  );
+}
+
 
   Widget _buildUserMoney() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('portfolio')
-          .doc('details')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('portfolio')
+        .doc('details')
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
 
-        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
-        double userMoney = portfolioData.containsKey('money')
-            ? portfolioData['money'].toDouble()
-            : 100000; // default value is 100000
+      var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+      double userMoney = portfolioData.containsKey('money')
+          ? (portfolioData['money'] as num?)?.toDouble() ?? 100000
+          : 100000; // default value is 100000
 
-        return Text(
-          'Buying Power: \$${userMoney.toStringAsFixed(2)}',
-          style: const TextStyle(fontSize: 16),
-        );
-      },
-    );
-  }
+      return Text(
+        'Buying Power: \$${userMoney.toStringAsFixed(2)}',
+        style: const TextStyle(fontSize: 16),
+      );
+    },
+  );
+}
+
 
   Widget _buildGamePage() {
     return Column(

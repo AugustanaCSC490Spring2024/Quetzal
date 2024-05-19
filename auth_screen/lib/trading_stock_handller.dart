@@ -2,12 +2,14 @@
 
 import 'dart:convert';
 import 'package:auth_screen/money.dart';
-import 'package:auth_screen/screens/home_screen.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class TradePage extends StatefulWidget {
   final String ticker;
@@ -92,7 +94,7 @@ class TradePageState extends State<TradePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () => handleTrade(context, 'Buying'),
+                        onPressed: () => handleTrade('Buying'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
@@ -100,7 +102,7 @@ class TradePageState extends State<TradePage> {
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton(
-                        onPressed: () => handleTrade(context, 'Selling'),
+                        onPressed: () => handleTrade('Selling'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
@@ -114,14 +116,16 @@ class TradePageState extends State<TradePage> {
     );
   }
 
-  Future<void> handleTrade(BuildContext context, String action) async {
+  Future<void> handleTrade(String action) async {
     String quantity = quantityController.text.trim();
     String price = priceController.text.trim();
 
     if ((tradeByQuantity && quantity.isEmpty) || (!tradeByQuantity && price.isEmpty)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter either quantity or price')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter either quantity or price')),
+        );
+      }
       return;
     }
 
@@ -159,78 +163,81 @@ class TradePageState extends State<TradePage> {
 
         Money userFunds = Money(portfolioData.containsKey('money') ? portfolioData['money'] : 100000.0);
 
+        var stocks = portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : [];
+        var existingStockIndex = stocks.indexWhere((stock) => stock['ticker'] == widget.ticker);
+
         if (action == 'Buying') {
           if (!userFunds.hasEnough(totalCost)) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Not enough funds to buy $requestedShares ${widget.ticker}')),
-            );
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Not enough funds to buy $requestedShares ${widget.ticker}')),
+              );
+            }
             return;
           }
 
-          var stocks = portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : [];
-          var existingStockIndex = stocks.indexWhere((stock) => stock['ticker'] == widget.ticker);
           if (existingStockIndex != -1) {
             stocks[existingStockIndex]['quantity'] += requestedShares;
+            stocks[existingStockIndex]['equity'] = stocks[existingStockIndex]['quantity'] * stockPrice;
           } else {
-            stocks.add({'ticker': widget.ticker, 'quantity': requestedShares});
+            stocks.add({'ticker': widget.ticker, 'quantity': requestedShares, 'equity': requestedShares * stockPrice});
           }
 
           userFunds.deduct(totalCost);
 
-          await portfolioDocRef.set({
-            'stocks': stocks,
-            'money': userFunds.starting_amount,
-            'Name': currentUser?.displayName,
-            'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
-          }, SetOptions(merge: true));
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Bought $requestedShares ${widget.ticker}')),
-          );
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage())
-          );
         } else if (action == 'Selling') {
-          var stocks = portfolioData.containsKey('stocks') ? List<Map<String, dynamic>>.from(portfolioData['stocks']) : [];
-          var existingStockIndex = stocks.indexWhere((stock) => stock['ticker'] == widget.ticker);
           double parsedQuantity = requestedShares;
           if (existingStockIndex != -1 && stocks[existingStockIndex]['quantity'] >= parsedQuantity) {
             double earnings = stockPrice * parsedQuantity;
 
             stocks[existingStockIndex]['quantity'] -= parsedQuantity;
+            if (stocks[existingStockIndex]['quantity'] == 0) {
+              stocks.removeAt(existingStockIndex);
+            } else {
+              stocks[existingStockIndex]['equity'] = stocks[existingStockIndex]['quantity'] * stockPrice;
+            }
 
             userFunds.add(earnings);
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Sold $parsedQuantity ${widget.ticker}')),
-            );
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage())
-            );
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('You do not own enough ${widget.ticker} to sell')),
-            );
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('You do not own enough ${widget.ticker} to sell')),
+              );
+            }
+            return;
           }
         }
+
+        await portfolioDocRef.set({
+          'stocks': stocks,
+          'money': userFunds.starting_amount,
+          'Name': currentUser?.displayName,
+          'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
+        }, SetOptions(merge: true));
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${action == 'Buying' ? 'Bought' : 'Sold'} $requestedShares ${widget.ticker}')),
+          );
+        }
+
       } else {
         throw Exception('Failed to fetch stock price: ${response.statusCode}');
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('Error handling trade: $error');
+      if (mounted) {
+        logger.e('Error handling trade: $error');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid input format')),
+        );
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid input format')),
-      );
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 }
