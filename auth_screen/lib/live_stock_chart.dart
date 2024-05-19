@@ -254,7 +254,7 @@ class _LiveStockChartState extends State<LiveStockChart> {
                     ),
                   ),
                 ],
-                titlesData: FlTitlesData(
+                titlesData: FlTitlesData( 
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -265,7 +265,7 @@ class _LiveStockChartState extends State<LiveStockChart> {
                           text = (value / 1000).toStringAsFixed(1) + 'K';
                         } else {
                           text = value.toString();
-                        }
+                        } 
                         return Text( 
                           text, 
                           style: TextStyle(
