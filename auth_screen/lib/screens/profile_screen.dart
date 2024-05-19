@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auth_screen/screens/SettingsScreen.dart'; 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,16 +8,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:auth_screen/user_profile.dart'; 
-import 'sign_up_screen.dart'; 
+import 'sign_in_screen.dart'; 
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {  
+class ProfileScreenState extends State<ProfileScreen> {  
   final FirebaseAuth _auth = FirebaseAuth.instance; 
   final ImagePicker _picker = ImagePicker(); 
   String _profileImageUrl = ""; 
@@ -69,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Profile picture updated successfully')),
+            const SnackBar(content: Text('Profile picture updated successfully')),
           );
 
         } catch (e) {
@@ -80,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No image selected')),
+        const SnackBar(content: Text('No image selected')),
       );
     }
   }
@@ -147,12 +149,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textColor: Colors.red,
                     onPress: () {
                       _auth.signOut().then((value) {
-                        print("Signed Out.");
                         Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => const SignUpScreen(), // Updated reference
+                            builder: (BuildContext context) => const SignIn(), // Updated reference
                           ),
                         );
                       }); 
