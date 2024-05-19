@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/questions.dart';
 import 'package:auth_screen/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -30,17 +32,31 @@ class QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  Future<void> updatePointsInFirestore() async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    var userDocRef = FirebaseFirestore.instance.collection('users').doc(userId).collection('portfolio').doc('details');
+
+    var userDocSnapshot = await userDocRef.get();
+    var userData = userDocSnapshot.data() ?? {};
+
+    int currentPoints = userData.containsKey('points') ? userData['points'] : 0;
+    int newPoints = currentPoints + correctAnswers;
+
+    await userDocRef.set({
+      'points': newPoints,
+    }, SetOptions(merge: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('QUIZ'),
       ),
-       backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
+      backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
       body: ListView.builder(
         itemCount: questions.length,
         itemBuilder: (context, index) {
-          
           return QuestionCard(
             question: questions[index]['question'],
             options: questions[index]['options'],
@@ -50,7 +66,8 @@ class QuizScreenState extends State<QuizScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          await updatePointsInFirestore();
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -102,7 +119,7 @@ class QuestionCard extends StatefulWidget {
 class QuestionCardState extends State<QuestionCard> {
   String? selectedOption;
   String? correctAnswer;
-  bool answerChecked = false; 
+  bool answerChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +145,7 @@ class QuestionCardState extends State<QuestionCard> {
                     title: Text(option.value),
                     groupValue: selectedOption,
                     value: option.key,
-                    onChanged: answerChecked 
+                    onChanged: answerChecked
                         ? null
                         : (value) {
                             setState(() {
@@ -141,14 +158,14 @@ class QuestionCardState extends State<QuestionCard> {
             ),
             if (selectedOption != null)
               ElevatedButton(
-                onPressed: answerChecked 
+                onPressed: answerChecked
                     ? null
                     : () {
                         bool isCorrect = selectedOption == widget.answer;
                         widget.updateCorrectAnswers(isCorrect);
                         setState(() {
                           correctAnswer = widget.options[widget.answer];
-                          answerChecked = true; 
+                          answerChecked = true;
                         });
                       },
                 child: const Text('Check Answer'),

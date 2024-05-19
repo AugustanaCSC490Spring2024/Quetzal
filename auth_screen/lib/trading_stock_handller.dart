@@ -151,7 +151,7 @@ class TradePageState extends State<TradePage> {
         }
 
         String userId = FirebaseAuth.instance.currentUser!.uid;
-        final currentUser = FirebaseAuth.instance.currentUser;
+        
 
         var portfolioDocRef = FirebaseFirestore.instance
             .collection('users')
@@ -212,9 +212,11 @@ class TradePageState extends State<TradePage> {
         await portfolioDocRef.set({
           'stocks': stocks,
           'money': userFunds.starting_amount,
-          'Name': currentUser?.displayName,
           'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
         }, SetOptions(merge: true));
+
+         Navigator.pop(context);
+         Navigator.pop(context);
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
