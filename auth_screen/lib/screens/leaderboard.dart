@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 
-class Leaderboard extends StatefulWidget { 
+class Leaderboard extends StatefulWidget {
   const Leaderboard({super.key});
 
   @override
@@ -16,6 +17,15 @@ class _LeaderboardState extends State<Leaderboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Leaderboard'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
       ),
       body: FutureBuilder<QuerySnapshot>(
         future: _firestore.collection('users').get(),

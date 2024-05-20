@@ -54,8 +54,17 @@ class QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('QUIZ'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
       ),
-      backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
+      backgroundColor: const Color.fromRGBO(171, 200, 192, 1),
       body: ListView.builder(
         itemCount: questions.length,
         itemBuilder: (context, index) {
@@ -75,16 +84,16 @@ class QuizScreenState extends State<QuizScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Quiz Result'),
-                backgroundColor: const Color.fromRGBO(171, 200, 192, 2),
+                backgroundColor: const Color.fromRGBO(171, 200, 192, 1),
                 content: Text('You got $correctAnswers out of ${questions.length} correct!'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),
-                        (route) => false, 
+                        (route) => false,
                       );
                     },
                     child: const Text('OK'),
@@ -168,7 +177,7 @@ class QuestionCardState extends State<QuestionCard> {
                         setState(() {
                           correctAnswer = widget.options[widget.answer];
                           answerChecked = true;
-                        });
+                        }); // <- Missing parenthesis added here
                       },
                 child: const Text('Check Answer'),
               ),

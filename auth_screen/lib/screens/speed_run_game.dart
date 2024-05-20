@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math'; 
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +56,8 @@ class SpeedrunState extends State<Speedrun> {
   int dataIndex = 0;
   late double chartHeight;
 
-  List<double> buyPrices = [];
-  int totalBuys = 0;
-  int maxBuys = 5;
+  double? buyPrice;
+  bool hasBought = false;
   bool isVisualizationEnded = false;
   double gpoints = 0;
 
@@ -118,7 +117,7 @@ class SpeedrunState extends State<Speedrun> {
 
   void endGame() {
     isVisualizationEnded = true;
-    if (buyPrices.isNotEmpty) {
+    if (hasBought) {
       showSnackBar("The visualization has ended. You can no longer trade.");
     }
     updateUserPointsInFirebase();
@@ -140,12 +139,12 @@ class SpeedrunState extends State<Speedrun> {
       showSnackBar("You cannot buy after the visualization has ended.");
       return;
     }
-    if (totalBuys < maxBuys) {
-      buyPrices.add(currentPrice);
-      totalBuys++;
-      showSnackBar("Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker (${totalBuys}/$maxBuys)");
+    if (!hasBought) {
+      buyPrice = currentPrice;
+      hasBought = true;
+      showSnackBar("Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker");
     } else {
-      showSnackBar("You have reached the maximum number of buys.");
+      showSnackBar("You have already bought $selectedTicker at \$${buyPrice!.toStringAsFixed(2)}.");
     }
   }
 
@@ -154,14 +153,14 @@ class SpeedrunState extends State<Speedrun> {
       showSnackBar("You cannot sell after the visualization has ended.");
       return;
     }
-    if (buyPrices.isNotEmpty) {
+    if (hasBought) {
       double sellPrice = currentPrice;
-      double totalProfit = buyPrices.fold(0, (sum, buyPrice) => sum + (sellPrice - buyPrice));
-      gpoints += totalProfit / 10;
-      buyPrices.clear();
+      double profit = sellPrice - buyPrice!;
+      gpoints += profit / 10;
+      hasBought = false;
       showSnackBar(
-          "Sold all positions at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. Total ${totalProfit >= 0 ? 'Profit' : 'Loss'}: \$${totalProfit.toStringAsFixed(2)}");
-      addProfitToUserMoney(totalProfit);
+          "Sold at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. ${profit >= 0 ? 'Profit' : 'Loss'}: \$${profit.toStringAsFixed(2)}");
+      addProfitToUserMoney(profit);
     } else {
       showSnackBar("You need to buy $selectedTicker first.");
     }
@@ -324,3 +323,4 @@ class SpeedrunState extends State<Speedrun> {
     );
   }
 }
+ 

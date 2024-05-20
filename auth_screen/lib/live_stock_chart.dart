@@ -334,6 +334,8 @@
 
 
 
+// ignore_for_file: dangling_library_doc_comments, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, avoid_print
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';

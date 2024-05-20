@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:auth_screen/user_profile.dart'; 
 import 'sign_in_screen.dart'; 
+import 'home_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -98,7 +99,18 @@ class ProfileScreenState extends State<ProfileScreen> {
     final currentUser = _auth.currentUser;
 
     return Scaffold(
-      appBar: AppBar(actions: const []),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: currentUser == null

@@ -140,6 +140,8 @@
 //   }
 // }
 
+// ignore_for_file: prefer_final_fields, unused_field, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors
+
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
