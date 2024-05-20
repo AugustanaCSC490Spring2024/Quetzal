@@ -56,8 +56,9 @@ class SpeedrunState extends State<Speedrun> {
   int dataIndex = 0;
   late double chartHeight;
 
-  double? buyPrice;
-  bool hasBought = false;
+  List<double> buyPrices = [];
+  int totalBuys = 0;
+  int maxBuys = 5;
   bool isVisualizationEnded = false;
   double gpoints = 0;
 
@@ -117,7 +118,7 @@ class SpeedrunState extends State<Speedrun> {
 
   void endGame() {
     isVisualizationEnded = true;
-    if (hasBought) {
+    if (buyPrices.isNotEmpty) {
       showSnackBar("The visualization has ended. You can no longer trade.");
     }
     updateUserPointsInFirebase();
@@ -139,12 +140,12 @@ class SpeedrunState extends State<Speedrun> {
       showSnackBar("You cannot buy after the visualization has ended.");
       return;
     }
-    if (!hasBought) {
-      buyPrice = currentPrice;
-      hasBought = true;
-      showSnackBar("Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker");
+    if (totalBuys < maxBuys) {
+      buyPrices.add(currentPrice);
+      totalBuys++;
+      showSnackBar("Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker (${totalBuys}/$maxBuys)");
     } else {
-      showSnackBar("You have already bought $selectedTicker at \$${buyPrice!.toStringAsFixed(2)}.");
+      showSnackBar("You have reached the maximum number of buys.");
     }
   }
 
@@ -153,14 +154,14 @@ class SpeedrunState extends State<Speedrun> {
       showSnackBar("You cannot sell after the visualization has ended.");
       return;
     }
-    if (hasBought) {
+    if (buyPrices.isNotEmpty) {
       double sellPrice = currentPrice;
-      double profit = sellPrice - buyPrice!;
-      gpoints += profit / 10;
-      hasBought = false;
+      double totalProfit = buyPrices.fold(0, (sum, buyPrice) => sum + (sellPrice - buyPrice));
+      gpoints += totalProfit / 10;
+      buyPrices.clear();
       showSnackBar(
-          "Sold at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. ${profit >= 0 ? 'Profit' : 'Loss'}: \$${profit.toStringAsFixed(2)}");
-      addProfitToUserMoney(profit);
+          "Sold all positions at \$${sellPrice.toStringAsFixed(2)} for $selectedTicker. Total ${totalProfit >= 0 ? 'Profit' : 'Loss'}: \$${totalProfit.toStringAsFixed(2)}");
+      addProfitToUserMoney(totalProfit);
     } else {
       showSnackBar("You need to buy $selectedTicker first.");
     }
