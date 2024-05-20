@@ -1,8 +1,11 @@
+
+import 'package:auth_screen/screens/home_screen.dart';
+import 'package:auth_screen/screens/quiz.dart';
+import 'package:auth_screen/screens/splashscreen.dart';
 import 'package:flutter/foundation.dart'; 
 import 'package:flutter/material.dart';
 //import 'package:auth_screen/screens/sign_in_screen.dart';
 //import 'package:auth_screen/screens/startingscreen.dart'; 
-import 'package:auth_screen/screens/splashscreen.dart'; 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; // Import the firebase_options.dart file.
 void main() async {
