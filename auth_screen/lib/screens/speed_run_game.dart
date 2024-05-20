@@ -67,7 +67,44 @@ class SpeedrunState extends State<Speedrun> {
     super.initState();
     randomIndex = random.nextInt(ticker.length);
     selectedTicker = ticker[randomIndex];
-    stockDataFuture = fetchStockData();
+    stockDataFuture = Future.value([]); // Placeholder future
+    // Show the instructions popup when the widget is first created
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showInstructionsPopup();
+    });
+  }
+
+  void _showInstructionsPopup() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Speedrun Game Instructions'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('1. You can buy a stock up to 5 times.'),
+                Text('2. You can sell all your positions at once.'),
+                Text('3. Try to maximize your profit.'),
+                Text('4. You cannot trade after the visualization ends.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Play'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  stockDataFuture = fetchStockData(); // Start fetching stock data when the user clicks "Play"
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<List<StockPoint>> fetchStockData() async {
@@ -249,6 +286,10 @@ class SpeedrunState extends State<Speedrun> {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            if (displayedSpots.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
             }
 
             return Padding(
