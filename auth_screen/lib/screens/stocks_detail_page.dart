@@ -35,7 +35,7 @@ class StockDetailsPageState extends State<StockDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stock Details - ${widget.ticker}'),
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Container(
         color: Colors.black,

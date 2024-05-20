@@ -1,4 +1,6 @@
 //used chatgpt for some help and to debug this code 
+// ignore_for_file: unnecessary_brace_in_string_interps, avoid_types_as_parameter_names
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';

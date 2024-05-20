@@ -88,6 +88,10 @@ flutter:
     - assets/images/mario.gif
     - assets/images/wood.jpg
     - assets/icon/MSIM1024_1024.png
+    - assets/images/3.png
+    - assets/images/2.png
+    - assets/images/1.png
+    - assets/images/stage.jpg
     
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

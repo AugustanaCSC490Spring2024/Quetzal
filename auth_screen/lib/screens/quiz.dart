@@ -54,15 +54,7 @@ class QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('QUIZ'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          },
-        ),
+        automaticallyImplyLeading: false, // Remove the back button
       ),
       backgroundColor: const Color.fromRGBO(171, 200, 192, 1),
       body: ListView.builder(
@@ -177,7 +169,7 @@ class QuestionCardState extends State<QuestionCard> {
                         setState(() {
                           correctAnswer = widget.options[widget.answer];
                           answerChecked = true;
-                        }); // <- Missing parenthesis added here
+                        });
                       },
                 child: const Text('Check Answer'),
               ),

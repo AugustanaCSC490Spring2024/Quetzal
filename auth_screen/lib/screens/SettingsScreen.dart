@@ -1,264 +1,9 @@
-// import 'package:flutter/material.dart';
-// import 'package:auth_screen/screens/editProfileScreen.dart'; 
-
-// class SettingsScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Settings'),
-//       ),
-//       body: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           ElevatedButton(
-//             onPressed: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(builder: (context) => EditProfileScreen()),
-//               );
-//             },
-//             child: Text("Edit Profile"),
-//           ),
-//           // Other settings options can be added here
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:auth_screen/screens/sign_in_screen.dart'; // Adjust as needed
-
-// class SettingsScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Settings'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'Settings',
-//               style: Theme.of(context).textTheme.headline6,
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 _showDeleteConfirmationDialog(context);
-//               },
-//               child: Text('Delete Profile and Account'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _showDeleteConfirmationDialog(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: Text('Delete Profile and Account'),
-//           content: Text(
-//               'Are you sure you want to delete your profile and account? This action cannot be undone.'),
-//           actions: [
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(); 
-//               },
-//               child: Text('No'),
-//             ),
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(); 
-//                 _deleteUserAccount(context);
-//               },
-//               child: Text('Yes'),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-//   Future<void> _deleteUserAccount(BuildContext context) async {
-//     final currentUser = FirebaseAuth.instance.currentUser;
-
-//     if (currentUser == null) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('No current user found. Please sign in again.')),
-//       );
-//       return;
-//     }
-
-//     try {
-//       // Delete the Firestore document
-//       final userDocRef = FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(currentUser.uid);
-
-//       await userDocRef.delete(); // Delete user data from Firestore
-
-//       // Delete the Firebase Auth user
-//       await currentUser.delete(); // Delete the Firebase Auth account
-
-//       // Redirect to sign-in screen after account deletion
-//       Navigator.of(context).popUntil((route) => route.isFirst); // Pop all screens
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(
-//           builder: (context) => SignIn(), // Adjust as needed
-//         ),
-//       );
-
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Profile and account deleted successfully')),
-//       );
-//     } catch (e) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Failed to delete profile and account: ${e.toString()}')),
-//       );
-//     }
-//   }
-// }  
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:auth_screen/screens/editProfileScreen.dart'; 
-// import 'package:auth_screen/screens/sign_in_screen.dart'; 
-
-// class SettingsScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Settings'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(builder: (context) => EditProfileScreen()),
-//                 );
-//               },
-//               child: Text("Edit Profile"),
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 _showDeleteConfirmationDialog(context);
-//               },
-//               child: Text('Delete Profile and Account'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _showDeleteConfirmationDialog(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: Text('Delete Profile and Account'),
-//           content: Text(
-//               'Are you sure you want to delete your profile and account? This action cannot be undone.'),
-//           actions: [
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(); // Close dialog
-//               },
-//               child: Text('No'),
-//             ),
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(); // Close dialog
-//                 _deleteUserAccount(context);
-//               },
-//               child: Text('Yes'),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-//   Future<void> _deleteUserAccount(BuildContext context) async {
-//     final currentUser = FirebaseAuth.instance.currentUser;
-
-//     if (currentUser == null) {
-//       _showSnackBar(context, 'No current user found. Please sign in again.');
-//       return;
-//     }
-
-//     try {
-//       if (context.mounted) {
-//         // Delete the Firestore document
-//         final userDocRef = FirebaseFirestore.instance
-//             .collection('users')
-//             .doc(currentUser.uid);
-
-//         await userDocRef.delete(); // Delete user data from Firestore
-
-//         await currentUser.delete(); // Delete Firebase Auth account 
-
-//         if (context.mounted) {
-//           Navigator.of(context).popUntil((route) => route.isFirst); 
-//           Navigator.pushReplacement(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => SignIn(),
-//             ),
-//           );  
-
-//           _showSnackBar(context, 'Profile and account deleted successfully');
-//         }
-//       }
-//     } catch (e) {
-//       if (context.mounted) {
-//         _showSnackBar(context, 'Failed to delete profile and account: ${e.toString()}');
-//       }
-//     }
-//   }
-
-//   void _showSnackBar(BuildContext context, String message) {
-//     if (context.mounted) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text(message)),
-//       );
-//     }
-//   }
-// }
-
-
-//import 'dart:ffi'; 
-
 // ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; 
-import 'package:auth_screen/screens/sign_in_screen.dart'; // Adjust as needed
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auth_screen/screens/sign_in_screen.dart';
 import 'package:auth_screen/screens/editProfileScreen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -270,26 +15,70 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Padding(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.blueGrey[100], // Blue-grey background color
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-                );
-              },
-              child: const Text("Edit Profile"),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    backgroundColor: Colors.lightGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    "Edit Profile",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    _showAboutUsDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    backgroundColor: Colors.lightGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'About Us',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 _showDeleteConfirmationDialog(context);
               },
-              child: const Text('Delete Profile and Account'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Delete Profile and Account',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
           ],
         ),
@@ -334,8 +123,8 @@ class SettingsScreen extends StatelessWidget {
 
     try {
       final userDocRef = FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid);
+          .collection('users')
+          .doc(currentUser.uid);
 
       // Delete Firestore document
       await userDocRef.delete();
@@ -348,12 +137,32 @@ class SettingsScreen extends StatelessWidget {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const SignIn(), 
+          builder: (context) => const SignIn(),
         ),
       );
     } catch (e) {
       _showSnackBar(context, 'Failed to delete profile and account: ${e.toString()}');
     }
+  }
+
+  void _showAboutUsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('About Us'),
+          content: const Text("Welcome to MarketSim: Learn Stock Market Investing Risk-Free. MarketSim offers a risk-free environment for mastering stock market investing. Practice trading with fake currency, stay updated with real-time market changes, and try our trading games. Whether you're a novice investor, a student, or simply curious about stocks, MarketSim is your go-to app. Join us and embark on your journey to financial literacy and investment success!"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showSnackBar(BuildContext context, String message) {
