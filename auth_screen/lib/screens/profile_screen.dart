@@ -124,11 +124,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                           : null,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    currentUser.displayName ?? "User",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                 
                   Text(
                     currentUser.email ?? "No email",
                     style: Theme.of(context).textTheme.titleMedium,
