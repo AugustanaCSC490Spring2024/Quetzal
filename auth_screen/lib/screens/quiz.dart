@@ -41,8 +41,8 @@ class QuizScreenState extends State<QuizScreen> {
     var userDocSnapshot = await userDocRef.get();
     var userData = userDocSnapshot.data() ?? {};
 
-    int currentPoints = userData.containsKey('points') ? userData['points'] : 0;
-    int newPoints = currentPoints + correctAnswers;
+    double currentPoints = userData.containsKey('points') ? userData['points'] : 0;
+    double newPoints = currentPoints + correctAnswers;
 
     await userDocRef.set({
       'points': newPoints,
