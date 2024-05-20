@@ -215,8 +215,7 @@ class TradePageState extends State<TradePage> {
           'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
         }, SetOptions(merge: true));
 
-         Navigator.pop(context);
-         Navigator.pop(context);
+        Navigator.pop(context, 'updated'); // Pop back with a result to indicate the trade was successful
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
