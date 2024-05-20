@@ -78,6 +78,7 @@ flutter_icons:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/default_profile.png
     - assets/images/sim.jpg
     - assets/images/Growing Stock Index.gif
     - assets/images/blopblop2.png
@@ -92,7 +93,7 @@ flutter:
     - assets/images/2.png
     - assets/images/1.png
     - assets/images/stage.jpg
-    
+    - assets/images/bground.jpg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

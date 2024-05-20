@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:auth_screen/screens/game_screen.dart';
 
 class Leaderboard extends StatefulWidget {
   const Leaderboard({super.key});
@@ -20,11 +19,7 @@ class _LeaderboardState extends State<Leaderboard> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const GameScreen()),
-              (route) => false,
-            );
+            Navigator.pop(context);
           },
         ),
       ),

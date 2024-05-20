@@ -51,52 +51,88 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Change Password'),
+        backgroundColor: Colors.blueGrey,
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _currentPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Current Password',
-                ),
-                obscureText: true, // Hide the text for passwords
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your current password';
-                  }
-                  return null;
-                },
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: const AssetImage("assets/images/bground.jpg"),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
               ),
-              TextFormField(
-                controller: _newPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'New Password',
-                ),
-                obscureText: true, // Hide the text for passwords
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your new password';
-                  }
-                  if (getPasswordStrengthError(value) != null) { //must check if this is working
-                    return getPasswordStrengthError(value);
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _changePassword,
-                child: const Text('Change Password'), 
-              ),
-            ],
+            ),
           ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 60),
+                  const Text(
+                    'Change Your Password',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(blurRadius: 10, color: Colors.black, offset: Offset(2, 2))
+                      ]
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  buildTextField(_currentPasswordController, 'Current Password', Icons.lock),
+                  const SizedBox(height: 10),
+                  buildTextField(_newPasswordController, 'New Password', Icons.lock_outline),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _changePassword,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTextField(TextEditingController controller, String label, IconData icon) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.white),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.3),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
         ),
       ),
+      style: const TextStyle(color: Colors.white),
+      obscureText: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your password';
+        }
+        if (label == 'New Password' && getPasswordStrengthError(value) != null) {
+          return getPasswordStrengthError(value);
+        }
+        return null;
+      },
     );
   }
 }

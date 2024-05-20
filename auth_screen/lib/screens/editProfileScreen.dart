@@ -79,55 +79,98 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
+        backgroundColor: Colors.blueGrey,
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(
-                  labelText: 'First Name',
-                ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: const AssetImage("assets/images/bground.jpg"),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
               ),
-              TextField(
-                controller: _lastNameController,
-                decoration: const InputDecoration( 
-                  labelText: 'Last Name',
-                ),
-              ),
-              TextField( 
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-              ),
-              const SizedBox(height: 20), 
-
-              ElevatedButton(
-                onPressed: _saveChanges, 
-                child: const Text('Save Changes'),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ChangePasswordScreen(), 
-                    ),
-                  );
-                },
-                child: const Text('Change Password'),
-              ),
-            ],
+            ),
           ),
-        ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 60),
+                  const Text(
+                    'Edit Your Profile',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(blurRadius: 10, color: Colors.black, offset: Offset(2, 2))
+                      ]
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  buildTextField(_firstNameController, 'First Name', Icons.person),
+                  const SizedBox(height: 10),
+                  buildTextField(_lastNameController, 'Last Name', Icons.person_outline),
+                  const SizedBox(height: 10),
+                  buildTextField(_emailController, 'Email', Icons.email),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _saveChanges,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ChangePasswordScreen(), 
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
 
+  Widget buildTextField(TextEditingController controller, String label, IconData icon) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.white),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.3),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      style: const TextStyle(color: Colors.white), // Change text color to white
+    );
+  }
+}

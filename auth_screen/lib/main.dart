@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/splashscreen.dart'; 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart'; // Import the firebase_options.dart file.
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {

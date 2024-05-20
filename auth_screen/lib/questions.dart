@@ -20,7 +20,7 @@ List<Map<String, dynamic>> questionData = [
     "answer": "b",
   },
   {
-    "question": "Which financial statement provides information about a companys revenues and expenses over a specific period?",
+    "question": "Which financial statement provides information about a company’s revenues and expenses over a specific period?",
     "options": {
       "a": "Balance sheet",
       "b": "Income statement",
@@ -32,10 +32,10 @@ List<Map<String, dynamic>> questionData = [
   {
     "question": "What does the P/E ratio (Price-to-Earnings ratio) indicate?",
     "options": {
-      "a": "A companys debt level",
-      "b": "A companys market capitalization",
-      "c": "The relationship between a stocks price and its earnings per share",
-      "d": "The companys dividend payout ratio",
+      "a": "A company’s debt level",
+      "b": "A company’s market capitalization",
+      "c": "The relationship between a stock’s price and its earnings per share",
+      "d": "The company’s dividend payout ratio",
     },
     "answer": "c",
   },
@@ -82,10 +82,10 @@ List<Map<String, dynamic>> questionData = [
   {
     "question": "A dividend yield represents:",
     "options": {
-      "a": "The ratio of dividends paid to the companys market capitalization",
+      "a": "The ratio of dividends paid to the company’s market capitalization",
       "b": "The percentage of stock ownership in a company",
-      "c": "The percentage change in a stocks price over a specific period",
-      "d": "The ratio of dividends paid to a stocks current price",
+      "c": "The percentage change in a stock’s price over a specific period",
+      "d": "The ratio of dividends paid to a stock’s current price",
     },
     "answer": "d",
   },
@@ -94,7 +94,7 @@ List<Map<String, dynamic>> questionData = [
     "options": {
       "a": "To set interest rates for financial institutions",
       "b": "To regulate the stock exchanges in the country",
-      "c": "To oversee the Federal Reserves monetary policies",
+      "c": "To oversee the Federal Reserve’s monetary policies",
       "d": "To protect investors and maintain fair and efficient markets",
     },
     "answer": "d",
@@ -104,8 +104,8 @@ List<Map<String, dynamic>> questionData = [
     "options": {
       "a": "The stock has very low trading volume",
       "b": "The stock is trading below its fair value",
-      "c": "The stocks price has risen too quickly and might be due for a price correction",
-      "d": "The stocks price is undervalued",
+      "c": "The stock’s price has risen too quickly and might be due for a price correction",
+      "d": "The stock’s price is undervalued",
     },
     "answer": "c",
   },
@@ -120,9 +120,9 @@ List<Map<String, dynamic>> questionData = [
     "answer": "b",
   },
   {
-    "question": "A companys earnings report exceeded expectations, yet its stock price declined. What could be a plausible reason for this?",
+    "question": "A company’s earnings report exceeded expectations, yet its stock price declined. What could be a plausible reason for this?",
     "options": {
-      "a": "The companys CEO resigned.",
+      "a": "The company’s CEO resigned.",
       "b": "The overall market experienced a crash.",
       "c": "Analysts downgraded the stock.",
       "d": "Investors had already priced in the positive earnings expectations.",
@@ -148,5 +148,86 @@ List<Map<String, dynamic>> questionData = [
       "d": "Cash flow statement",
     },
     "answer": "c",
+  },
+  // Additional questions
+  {
+    "question": "What is an Initial Public Offering (IPO)?",
+    "options": {
+      "a": "A private sale of company stock",
+      "b": "The first sale of stock by a company to the public",
+      "c": "A stock buyback program initiated by a company",
+      "d": "The issuance of bonds by a company",
+    },
+    "answer": "b",
+  },
+  {
+    "question": "What is the primary benefit of owning preferred stock?",
+    "options": {
+      "a": "Higher potential for capital gains compared to common stock",
+      "b": "Guaranteed voting rights in shareholder meetings",
+      "c": "Fixed dividend payments and priority over common stock in the event of liquidation",
+      "d": "Ability to convert to bonds at any time",
+    },
+    "answer": "c",
+  },
+  {
+    "question": "Which term describes a prolonged period of falling stock prices?",
+    "options": {
+      "a": "Bull market",
+      "b": "Bear market",
+      "c": "Correction",
+      "d": "Recession",
+    },
+    "answer": "b",
+  },
+  {
+    "question": "What is the meaning of market capitalization?",
+    "options": {
+      "a": "The total value of a company's outstanding bonds",
+      "b": "The total market value of a company's outstanding shares",
+      "c": "The maximum potential value of a company's stock",
+      "d": "The average price of a company's stock over the past year",
+    },
+    "answer": "b",
+  },
+  {
+    "question": "What type of stock generally provides higher dividends and lower risk?",
+    "options": {
+      "a": "Growth stock",
+      "b": "Blue-chip stock",
+      "c": "Penny stock",
+      "d": "Cyclical stock",
+    },
+    "answer": "b",
+  },
+  {
+    "question": "What is a stock split?",
+    "options": {
+      "a": "The division of a company's outstanding shares into a higher number of shares",
+      "b": "The merging of two or more stocks into one",
+      "c": "The sale of new stock to existing shareholders",
+      "d": "The process of converting preferred stock into common stock",
+    },
+    "answer": "a",
+  },
+  {
+    "question": "What is a dividend reinvestment plan (DRIP)?",
+    "options": {
+      "a": "A plan that allows investors to receive dividends in the form of additional shares rather than cash",
+      "b": "A plan to reinvest company profits into new business ventures",
+      "c": "A strategy to invest in dividend-paying stocks only",
+      "d": "A type of retirement savings plan offered by companies",
+    },
+    "answer": "a",
+  },
+  {
+    "question": "Which of the following is considered a defensive stock?",
+    "options": {
+      "a": "A stock in a high-growth technology company",
+      "b": "A stock in a utility company",
+      "c": "A stock in a cyclical industry",
+      "d": "A stock in a startup company",
+    },
+    "answer": "b",
   },
 ];
