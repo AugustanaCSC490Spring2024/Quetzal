@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Auth Screen</string>
+	<string>Market Sim</string>
 	
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Your app needs access to your photo library to upload images.</string>

@@ -2,7 +2,7 @@
     package="com.example.auth_screen">
     
     <application
-        android:label="auth_screen"
+        android:label="Market Sim"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
