@@ -78,7 +78,7 @@ flutter_icons:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/default_profile.png
+    - assets/images/default_profile.png
     - assets/images/sim.jpg
     - assets/images/Growing Stock Index.gif
     - assets/images/blopblop2.png
