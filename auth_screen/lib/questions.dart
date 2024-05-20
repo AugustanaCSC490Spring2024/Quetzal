@@ -32,10 +32,10 @@ List<Map<String, dynamic>> questionData = [
   {
     "question": "What does the P/E ratio (Price-to-Earnings ratio) indicate?",
     "options": {
-      "a": "A company’s debt level",
-      "b": "A company’s market capitalization",
-      "c": "The relationship between a stock’s price and its earnings per share",
-      "d": "The company’s dividend payout ratio",
+      "a": "A companys debt level",
+      "b": "A companys market capitalization",
+      "c": "The relationship between a stocks price and its earnings per share",
+      "d": "The companys dividend payout ratio",
     },
     "answer": "c",
   },
@@ -82,10 +82,10 @@ List<Map<String, dynamic>> questionData = [
   {
     "question": "A dividend yield represents:",
     "options": {
-      "a": "The ratio of dividends paid to the company’s market capitalization",
+      "a": "The ratio of dividends paid to the companys market capitalization",
       "b": "The percentage of stock ownership in a company",
-      "c": "The percentage change in a stock’s price over a specific period",
-      "d": "The ratio of dividends paid to a stock’s current price",
+      "c": "The percentage change in a stocks price over a specific period",
+      "d": "The ratio of dividends paid to a stocks current price",
     },
     "answer": "d",
   },
@@ -94,7 +94,7 @@ List<Map<String, dynamic>> questionData = [
     "options": {
       "a": "To set interest rates for financial institutions",
       "b": "To regulate the stock exchanges in the country",
-      "c": "To oversee the Federal Reserve’s monetary policies",
+      "c": "To oversee the Federal Reserves monetary policies",
       "d": "To protect investors and maintain fair and efficient markets",
     },
     "answer": "d",
@@ -104,8 +104,8 @@ List<Map<String, dynamic>> questionData = [
     "options": {
       "a": "The stock has very low trading volume",
       "b": "The stock is trading below its fair value",
-      "c": "The stock’s price has risen too quickly and might be due for a price correction",
-      "d": "The stock’s price is undervalued",
+      "c": "The stocks price has risen too quickly and might be due for a price correction",
+      "d": "The stocks price is undervalued",
     },
     "answer": "c",
   },
@@ -120,9 +120,9 @@ List<Map<String, dynamic>> questionData = [
     "answer": "b",
   },
   {
-    "question": "A company’s earnings report exceeded expectations, yet its stock price declined. What could be a plausible reason for this?",
+    "question": "A companys earnings report exceeded expectations, yet its stock price declined. What could be a plausible reason for this?",
     "options": {
-      "a": "The company’s CEO resigned.",
+      "a": "The companys CEO resigned.",
       "b": "The overall market experienced a crash.",
       "c": "Analysts downgraded the stock.",
       "d": "Investors had already priced in the positive earnings expectations.",
