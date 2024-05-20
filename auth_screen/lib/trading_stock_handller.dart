@@ -1,3 +1,4 @@
+//Chatgpt assistance used in this class
 import 'dart:async';
 import 'dart:convert';
 import 'package:auth_screen/money.dart';
@@ -211,6 +212,11 @@ class TradePageState extends State<TradePage> {
                             hintText: 'Quantity',
                             border: OutlineInputBorder(),
                           ),
+                          onChanged: (value) {
+                            if (double.tryParse(value) != null && double.parse(value) < 0) {
+                              quantityController.text = '0';
+                            }
+                          },
                         )
                       : TextField(
                           controller: priceController,
@@ -219,6 +225,11 @@ class TradePageState extends State<TradePage> {
                             hintText: 'Price',
                             border: OutlineInputBorder(),
                           ),
+                          onChanged: (value) {
+                            if (double.tryParse(value) != null && double.parse(value) < 0) {
+                              priceController.text = '0';
+                            }
+                          },
                         ),
                   const SizedBox(height: 20),
                   Text(
@@ -287,9 +298,15 @@ class TradePageState extends State<TradePage> {
 
       if (tradeByQuantity) {
         requestedShares = double.parse(quantity);
+        if (requestedShares < 0) {
+          throw Exception('Quantity cannot be negative');
+        }
         totalCost = stockPrice * requestedShares;
       } else {
         totalCost = double.parse(price);
+        if (totalCost < 0) {
+          throw Exception('Price cannot be negative');
+        }
         requestedShares = totalCost / stockPrice;
       }
 
@@ -368,7 +385,7 @@ class TradePageState extends State<TradePage> {
       if (mounted) {
         logger.e('Error handling trade: $error');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid input format')),
+          SnackBar(content: Text(error.toString())),
         );
       }
     } finally {
