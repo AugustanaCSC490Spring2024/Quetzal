@@ -1,4 +1,3 @@
-// Used Chat gpt for assistance
 import 'dart:async';
 import 'dart:convert';
 import 'package:auth_screen/money.dart';
@@ -31,7 +30,7 @@ class TradePageState extends State<TradePage> {
   void initState() {
     super.initState();
     // Initialize the timer to fetch the latest stock price every second
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       fetchLatestStockPrice();
     });
   }
@@ -69,10 +68,8 @@ class TradePageState extends State<TradePage> {
         throw Exception('Failed to fetch stock price: ${response.statusCode}');
       }
     } catch (error) {
-      if (mounted) {
-        logger.e('Error fetching stock price: $error');
-        await fetchPreviousDayStockPrice();
-      }
+      logger.e('Error fetching stock price: $error');
+      await fetchPreviousDayStockPrice();
     }
   }
 
@@ -102,38 +99,32 @@ class TradePageState extends State<TradePage> {
         throw Exception('Failed to fetch stock price for the previous date: ${response.statusCode}');
       }
     } catch (error) {
-      if (mounted) {
-        logger.e('Error fetching previous day stock price: $error');
-      }
+      logger.e('Error fetching previous day stock price: $error');
     }
   }
 
   DateTime getPreviousTradingDay(DateTime now) {
     // Assuming market is closed on weekends (Saturday and Sunday)
-    DateTime previousDay = now.subtract(Duration(days: 1));
+    DateTime previousDay = now.subtract(const Duration(days: 1));
 
     if (previousDay.weekday == DateTime.sunday) {
-      previousDay = previousDay.subtract(Duration(days: 2)); // Move to Friday
+      previousDay = previousDay.subtract(const Duration(days: 2)); // Move to Friday
     } else if (previousDay.weekday == DateTime.saturday) {
-      previousDay = previousDay.subtract(Duration(days: 1)); // Move to Friday
+      previousDay = previousDay.subtract(const Duration(days: 1)); // Move to Friday
     }
 
     return previousDay;
   }
 
   bool isMarketOpen(DateTime now) {
-    final marketOpenTime = TimeOfDay(hour: 9, minute: 30);
-    final marketCloseTime = TimeOfDay(hour: 16, minute: 0);
+    const marketOpenTime = TimeOfDay(hour: 9, minute: 30);
+    const marketCloseTime = TimeOfDay(hour: 16, minute: 0);
     final currentTime = TimeOfDay(hour: now.hour, minute: now.minute);
 
-    if ((currentTime.hour > marketOpenTime.hour ||
+    return (currentTime.hour > marketOpenTime.hour ||
             (currentTime.hour == marketOpenTime.hour && currentTime.minute >= marketOpenTime.minute)) &&
         (currentTime.hour < marketCloseTime.hour ||
-            (currentTime.hour == marketCloseTime.hour && currentTime.minute <= marketCloseTime.minute))) {
-      return true;
-    } else {
-      return false;
-    }
+            (currentTime.hour == marketCloseTime.hour && currentTime.minute <= marketCloseTime.minute));
   }
 
   Future<void> updateEquityInPortfolio() async {
@@ -234,7 +225,7 @@ class TradePageState extends State<TradePage> {
                     currentStockPrice != null
                         ? 'Current Stock Price: \$${currentStockPrice!.toStringAsFixed(2)}'
                         : 'Fetching current stock price...',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -362,14 +353,12 @@ class TradePageState extends State<TradePage> {
 
       await portfolioDocRef.set({
         'stocks': stocks,
-        'money': userFunds.starting_amount,
+        'money': userFunds.amount, // Correctly set the updated money value
         'points': portfolioData.containsKey('points') ? portfolioData['points'] : 0, // Initialize points if not exists
       }, SetOptions(merge: true));
 
-      Navigator.pop(context);
-      Navigator.pop(context); // Pop back with a result to indicate the trade was successful
-
       if (mounted) {
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${action == 'Buying' ? 'Bought' : 'Sold'} $requestedShares ${widget.ticker}')),
         );

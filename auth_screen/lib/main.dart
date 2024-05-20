@@ -1,6 +1,4 @@
 
-import 'package:auth_screen/screens/home_screen.dart';
-import 'package:auth_screen/screens/quiz.dart';
 import 'package:auth_screen/screens/splashscreen.dart';
 import 'package:flutter/foundation.dart'; 
 import 'package:flutter/material.dart';
