@@ -20,17 +20,13 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +185,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       icon: const Icon(Icons.show_chart),
                       label: const Text('Trade'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 88, 214, 141), // Match the earlier button color
+                        backgroundColor: const Color.fromARGB(255, 88, 214, 141), 
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

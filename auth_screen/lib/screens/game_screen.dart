@@ -17,9 +17,9 @@ class GameScreen extends StatelessWidget {
           // Mario GIF background with opacity
           Positioned.fill(
             child: Opacity(
-              opacity: 0.3, // Adjust the opacity value as needed
+              opacity: 0.3, 
               child: Image.asset(
-                'assets/images/mario.gif', // Ensure the path is correct
+                'assets/images/mario.gif',
                 fit: BoxFit.cover,
               ),
             ),
