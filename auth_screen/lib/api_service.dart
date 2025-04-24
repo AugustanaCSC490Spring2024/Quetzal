@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'api_config.dart';
 
 class ApiService {
-  static Future<List<Map<String, String>>> fetchTickerNews(String stockSymbol) async {
-    const apiKey = 'hDnp3QGn94ARKy0B8mzeEQyX9qY_Bwym';
-    const baseUrl = 'https://api.polygon.io/v2/reference/news';
+  static Future<List<Map<String, String>>> fetchTickerNews(
+      String stockSymbol) async {
+    const apiKey = ApiConfig.polygonApiKey;
+    const baseUrl = ApiConfig.polygonBaseUrl;
     final url = '$baseUrl?apiKey=$apiKey&ticker=$stockSymbol';
 
     try {

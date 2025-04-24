@@ -18,17 +18,17 @@ final ThemeData appTheme = ThemeData(
       fontWeight: FontWeight.bold,
     ),
   ),
-  textTheme: TextTheme(
-    headline1: const TextStyle(
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(
       color: primaryColor,
       fontSize: 32,
       fontWeight: FontWeight.bold,
     ),
-    bodyText1: const TextStyle(
+    bodyLarge: TextStyle(
       color: secondaryColor,
       fontSize: 16,
     ),
-    titleMedium: const TextStyle(
+    titleMedium: TextStyle(
       color: secondaryColor,
       fontSize: 20,
       fontWeight: FontWeight.bold,

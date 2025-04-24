@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -41,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# API keys and secrets
+**/api_keys.dart
+**/api_config.dart
+**/.env
+**/secrets.dart
+**/config/local.dart
+
+# Don't ignore example templates
+!**/*.example.dart
+
+# Specific files with sensitive data
+lib/api_service.dart
