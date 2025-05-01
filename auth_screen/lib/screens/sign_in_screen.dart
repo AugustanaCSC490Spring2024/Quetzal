@@ -37,6 +37,8 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     // Get screen size for responsive design
     final size = MediaQuery.of(context).size;
+    // Get bottom padding when keyboard is visible
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       // Remove AppBar for a more immersive experience
@@ -45,6 +47,8 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      // Add this to handle keyboard visibility
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           // Background gradient only (remove the image)
@@ -65,24 +69,32 @@ class _SignInState extends State<SignIn> {
           SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              // Always enable scrolling for better user experience
+              physics: const AlwaysScrollableScrollPhysics(),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: size.height - MediaQuery.of(context).padding.top,
+                  minHeight: size.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      32,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 40),
+                    // Reduce top spacing when keyboard is visible
+                    SizedBox(height: bottomPadding > 0 ? 20 : 40),
 
-                    // App logo and name - replacing animated text with static text
-                    Container(
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: staticAppTitle('MARKETSIM'),
-                    ),
+                    // App logo and name - with conditional visibility
+                    if (bottomPadding ==
+                        0) // Only show logo when keyboard is hidden
+                      Container(
+                        height: 100,
+                        alignment: Alignment.center,
+                        child: staticAppTitle('MARKETSIM'),
+                      ),
 
-                    const SizedBox(height: 30),
+                    SizedBox(height: bottomPadding > 0 ? 10 : 30),
 
                     // Login card with elevated design
                     Container(
@@ -143,10 +155,13 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    SizedBox(height: bottomPadding > 0 ? 20 : 30),
 
                     // Sign up option
                     signUpOptionWithBackground(),
+
+                    // Add extra padding at bottom for better scrolling
+                    SizedBox(height: bottomPadding > 0 ? 36 : 20),
                   ],
                 ),
               ),
