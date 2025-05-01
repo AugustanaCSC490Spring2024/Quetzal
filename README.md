@@ -1,4 +1,4 @@
-# 🚀 MarkitSim Market Simulator
+# 🚀 MarkitSim - Market Simulator
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-blue)](https://flutter.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-Latest-orange)](https://firebase.google.com/)
