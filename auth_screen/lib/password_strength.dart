@@ -1,5 +1,4 @@
 String? getPasswordStrengthError(String password) {
-
   if (password.length < 8) {
     return 'Password must be at least 8 characters long.';
   }
@@ -21,5 +20,4 @@ String? getPasswordStrengthError(String password) {
   }
 
   return null; // No error
-
 }

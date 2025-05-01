@@ -5,9 +5,8 @@ import 'api_config.dart';
 class ApiService {
   static Future<List<Map<String, String>>> fetchTickerNews(
       String stockSymbol) async {
-    const apiKey = ApiConfig.polygonApiKey;
-    const baseUrl = ApiConfig.polygonBaseUrl;
-    final url = '$baseUrl?apiKey=$apiKey&ticker=$stockSymbol';
+    // Use the helper method from ApiConfig.
+    final url = ApiConfig.getNewsUrl(ticker: stockSymbol).toString();
 
     try {
       final response = await http.get(Uri.parse(url));
