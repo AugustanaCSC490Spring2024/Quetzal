@@ -13,20 +13,20 @@ import 'package:auth_screen/screens/profile_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  // Index of the selected BottomNavigationBar tab.
   int _selectedIndex = 0;
   final bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    // ...existing initialization code...
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         backgroundColor: const Color.fromARGB(255, 203, 209, 211),
         actions: [
+          // Search button widget to trigger search functionalities.
           SearchButton(
             onPressed: (query) {
               if (kDebugMode) {
@@ -67,6 +68,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  // Returns title string based on the selected bottom navigation index.
   String _getSelectedTitle() {
     switch (_selectedIndex) {
       case 0:
@@ -80,12 +82,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  // Builds the main content area for the currently selected tab.
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
         return _buildHomePage();
       case 1:
-        return const GameScreen(); // Load the GameScreen
+        return const GameScreen();
       case 2:
         return const ProfileScreen();
       default:
@@ -93,25 +96,69 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  // Constructs the Home Page with header, portfolio graph, and stock info.
   Widget _buildHomePage() {
-    return Center(
-      child: _isLoading
-          ? const CircularProgressIndicator()
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PortfolioManagementWidget(),
-                  _buildUserMoney(),
-                  const SizedBox(height: 20),
-                  _buildStockWidgets(),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildWelcomeHeader(), // Header with welcome message
+          const SizedBox(height: 20),
+          PortfolioManagementWidget(), // Embedded portfolio graph
+          const SizedBox(height: 20),
+          _buildUserMoney(), // Display user's buying power
+          const SizedBox(height: 20),
+          _buildStockWidgets(), // List of stocks from user portfolio
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
+  // Builds a header card with a welcome message and a refresh button.
+  Widget _buildWelcomeHeader() {
+    final user = FirebaseAuth.instance.currentUser;
+    final displayName = user?.displayName ?? "Trader";
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Colors.greenAccent, Colors.lightGreen],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Welcome back, $displayName!",
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  // Trigger refresh of the homepage content if needed.
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Builds the widget that displays the user's portfolio stocks as a list.
   Widget _buildStockWidgets() {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
@@ -121,20 +168,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           .doc('details')
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+        if (snapshot.connectionState == ConnectionState.waiting)
           return const CircularProgressIndicator();
-        }
-
-        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+        var portfolioData =
+            (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
         List<Map<String, dynamic>> userStocks =
             portfolioData.containsKey('stocks')
                 ? List<Map<String, dynamic>>.from(portfolioData['stocks'])
                 : [];
-
         return Column(
           children: userStocks.map((stock) {
             return GestureDetector(
@@ -142,53 +184,57 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StockDetailsPage(ticker: stock['ticker']),
-                  ),
+                      builder: (context) =>
+                          StockDetailsPage(ticker: stock['ticker'])),
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Display stock ticker, quantity, and equity.
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           stock['ticker'],
-                          style: GoogleFonts.robotoMono(fontSize: 20, color: Colors.black),
+                          style: GoogleFonts.robotoMono(
+                              fontSize: 20, color: Colors.black),
                         ),
                         Text(
-                          'Quantity: ${stock['quantity'].toStringAsFixed(2)}', // Rounded to 2 decimal places
-                          style: GoogleFonts.robotoMono(fontSize: 20, color: Colors.black),
+                          'Quantity: ${stock['quantity'].toStringAsFixed(2)}',
+                          style: GoogleFonts.robotoMono(
+                              fontSize: 20, color: Colors.black),
                         ),
                         Text(
-                          'Equity: \$${stock['equity'].toStringAsFixed(2)}', // Rounded to 2 decimal places
-                          style: GoogleFonts.robotoMono(fontSize: 20, color: Colors.black),
+                          'Equity: \$${stock['equity'].toStringAsFixed(2)}',
+                          style: GoogleFonts.robotoMono(
+                              fontSize: 20, color: Colors.black),
                         ),
                         const SizedBox(height: 20),
                       ],
                     ),
+                    // Trade button navigates to the TradePage.
                     ElevatedButton.icon(
                       onPressed: () async {
                         final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TradePage(ticker: stock['ticker']), // Updated to TradePage
-                          ),
+                              builder: (context) =>
+                                  TradePage(ticker: stock['ticker'])),
                         );
                         if (result == 'updated') {
-                          // Refresh the portfolio when coming back
-                          setState(() {});
+                          setState(() {}); // Refresh portfolio upon return.
                         }
                       },
                       icon: const Icon(Icons.show_chart),
                       label: const Text('Trade'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 88, 214, 141), 
+                        backgroundColor:
+                            const Color.fromARGB(255, 88, 214, 141),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                            borderRadius: BorderRadius.circular(20)),
                       ),
                     ),
                   ],
@@ -201,6 +247,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  // Displays the user's buying power as streamed data.
   Widget _buildUserMoney() {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
@@ -210,19 +257,14 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           .doc('details')
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+        if (snapshot.connectionState == ConnectionState.waiting)
           return const CircularProgressIndicator();
-        }
-
-        var portfolioData = (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
+        var portfolioData =
+            (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
         double userMoney = portfolioData.containsKey('money')
             ? portfolioData['money'].toDouble()
-            : 100000; // default value is 100000
-
+            : 100000; // Default buying power if undefined.
         return Text(
           'Buying Power: \$${userMoney.toStringAsFixed(2)}',
           style: const TextStyle(fontSize: 16),
