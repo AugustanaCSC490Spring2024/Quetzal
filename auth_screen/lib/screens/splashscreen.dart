@@ -28,21 +28,21 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.5, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
       ),
     );
 
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.7, curve: Curves.easeOutBack),
+        curve: const Interval(0.0, 0.7, curve: Curves.easeOutBack),
       ),
     );
 
     _slideAnimation = Tween<double>(begin: 50.0, end: 0.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.2, 0.8, curve: Curves.easeOut),
+        curve: const Interval(0.2, 0.8, curve: Curves.easeOut),
       ),
     );
 
@@ -125,7 +125,7 @@ class _DynamicSplashScreenState extends State<DynamicSplashScreen>
                               offset: Offset(0, _slideAnimation.value),
                               child: FadeTransition(
                                 opacity: _fadeAnimation,
-                                child: Text(
+                                child: const Text(
                                   'MARKETSIM',
                                   style: TextStyle(
                                     fontSize: 36,
