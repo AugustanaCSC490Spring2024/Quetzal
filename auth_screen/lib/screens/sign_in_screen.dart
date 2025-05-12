@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
   static const Color _primaryColor = Color(0xFF205295);
   static const Color _accentColor = Color(0xFF2C74B3);
   final Color _cardColor =
-      Colors.white.withAlpha(230); // Fixed: replaced withOpacity(0.9)
+      Colors.white.withAlpha(230); // Updated from withOpacity(0.9)
 
   @override
   void dispose() {
@@ -239,15 +239,14 @@ class _SignInState extends State<SignIn> {
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-            color:
-                Colors.grey.withAlpha(77)), // Fixed: replaced withOpacity(0.3)
+            color: Colors.grey.withAlpha(77)), // Updated from withOpacity(0.3)
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: _accentColor, width: 2),
       ),
       filled: true,
-      fillColor: Colors.grey.withAlpha(26), // Fixed: replaced withOpacity(0.1)
+      fillColor: Colors.grey.withAlpha(26), // Updated from withOpacity(0.1)
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
     );
   }
@@ -298,8 +297,8 @@ class _SignInState extends State<SignIn> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 2,
-            shadowColor: _primaryColor
-                .withAlpha(128), // Fixed: replaced withOpacity(0.5)
+            shadowColor:
+                _primaryColor.withAlpha(128), // Updated from withOpacity(0.5)
           ),
           child: const Text(
             'Login',
@@ -319,11 +318,10 @@ class _SignInState extends State<SignIn> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withAlpha(38), // Fixed: replaced withOpacity(0.15)
+        color: Colors.white.withAlpha(38), // Updated from withOpacity(0.15)
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-            color:
-                Colors.white.withAlpha(51)), // Fixed: replaced withOpacity(0.2)
+            color: Colors.white.withAlpha(51)), // Updated from withOpacity(0.2)
       ),
       child: TextButton(
         onPressed: () {

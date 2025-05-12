@@ -161,7 +161,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2E7D32).withOpacity(0.1),
+                      color: const Color(0xFF2E7D32)
+                          .withAlpha(25), // Updated from withOpacity(0.1)
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -215,7 +216,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+            colors: [
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary
+                  .withAlpha(204), // Updated from withOpacity(0.8)
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -233,7 +238,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     style: GoogleFonts.montserrat(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white
+                          .withAlpha(230), // Updated from withOpacity(0.9)
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -251,7 +257,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color:
+                    Colors.white.withAlpha(51), // Updated from withOpacity(0.2)
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(

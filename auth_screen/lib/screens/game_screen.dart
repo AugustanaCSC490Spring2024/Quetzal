@@ -20,8 +20,10 @@ class GameScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primary.withOpacity(0.9),
-              theme.colorScheme.primary.withOpacity(0.7),
+              theme.colorScheme.primary
+                  .withAlpha(230), // Updated from withOpacity(0.9)
+              theme.colorScheme.primary
+                  .withAlpha(179), // Updated from withOpacity(0.7)
             ],
           ),
         ),
@@ -91,7 +93,8 @@ class GameScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white
+                        .withAlpha(25), // Updated from withOpacity(0.1)
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -164,7 +167,7 @@ class GameScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withAlpha(51), // Updated from withOpacity(0.2)
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(

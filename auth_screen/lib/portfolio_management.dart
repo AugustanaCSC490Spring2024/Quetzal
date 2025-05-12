@@ -211,8 +211,10 @@ class _PortfolioManagementWidgetState extends State<PortfolioManagementWidget> {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          Colors.blueAccent.withOpacity(0.3),
-                          Colors.blueAccent.withOpacity(0.0),
+                          Colors.blueAccent
+                              .withAlpha(77), // Updated from withOpacity(0.3)
+                          Colors.blueAccent
+                              .withAlpha(0), // Updated from withOpacity(0.0)
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
