@@ -5,7 +5,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 <p align="center">
-  <img src="/assets/images/MARKETSIM1024_1024.png" alt="MarketSim Logo" width="200"/>
+ <img src="auth_screen/assets/images/MSIM1024_1024.png" alt="MarketSim Logo" width="200"/>
+
 </p>
 
 ## 📊 About MarketSim
@@ -34,11 +35,12 @@ MarketSim is a powerful market simulation platform designed to provide users wit
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="auth_screen/assets/MarketSim pictures/MarketSim:game center.png" alt="Dashboard" width="250"/>
-  <img src="./auth_screen/assets/MarketSim pictures/MarketSim-gameCenter.png" alt="Game Center" width="250"/>
-  <img src="./auth_screen/assets/MarketSim pictures/MarketSim-quiz.png" alt="Quiz Center" width="250"/>
-  <img src="./auth_screen/assets/MarketSim pictures/MarketSim-speedRun-tutorial.png" alt="SpeedRun Tutorial" width="250">
-  <img src="./auth_screen/assets/MarketSim pictures/MarketSim-speedRun-trading.png" alt="SpeedRun Trading" width="250">
+<img src="auth_screen/assets/MarketSim pictures/MarketSim:homeScreem.png" alt="Dashboard" width="250"/>
+<img src="auth_screen/assets/MarketSim pictures/MarketSim:game center.png" alt="Game Center" width="250"/>
+<img src="auth_screen/assets/MarketSim pictures/MarketSim:quiz.png" alt="Quiz Center" width="250"/>
+<img src="auth_screen/assets/MarketSim pictures/MarketSim:speedRun Screenshot .png" alt="SpeedRun Tutorial" width="250">
+<img src="auth_screen/assets/MarketSim pictures/MarketSim:speedRun Screenshot - iPhone 16 Pro Max - 2025-05-12 at 17.41.29.png" alt="SpeedRun 
+Trading" width="250">
 </p>
 
 ## 🔧 Installation
