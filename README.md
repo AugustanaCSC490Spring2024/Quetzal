@@ -1,16 +1,16 @@
-# 🚀 MarkitSim - Market Simulator
+# 🚀 MarketSim - Market Simulator
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-blue)](https://flutter.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-Latest-orange)](https://firebase.google.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 <p align="center">
-  <img src="assets/icon/MSIM1024_1024.png" alt="Quetzal Logo" width="200"/>
+  <img src="/assets/images/MARKETSIM1024_1024.png" alt="MarketSim Logo" width="200"/>
 </p>
 
-## 📊 About Quetzal
+## 📊 About MarketSim
 
-Quetzal is a powerful market simulation platform designed to provide users with realistic trading experiences without financial risk. Our app offers sophisticated financial modeling, real-time data visualization, and educational resources for both beginner and advanced traders.
+MarketSim is a powerful market simulation platform designed to provide users with realistic trading experiences without financial risk. Our app offers sophisticated financial modeling, real-time data visualization, and educational resources for both beginner and advanced traders.
 
 ## ✨ Features
 
@@ -34,9 +34,11 @@ Quetzal is a powerful market simulation platform designed to provide users with 
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="assets/images/placeholder.jpg" alt="Dashboard" width="250"/>
-  <img src="assets/images/fin.jpg" alt="Market View" width="250"/>
-  <img src="assets/images/webpimage.webp" alt="Analytics" width="250"/>
+  <img src="/Users/rijan/Quetzal/auth_screen/assets/MarketSim pictures/MarketSim:homeScreem.png" alt="Dashboard" width="250"/>
+  <img src="/Users/rijan/Quetzal/auth_screen/assets/MarketSim pictures/MarketSim:homeScreem.png" alt="Game Center" width="250"/>
+  <img src="/Users/rijan/Quetzal/auth_screen/assets/MarketSim pictures/MarketSim:quiz.png" alt="Quiz Center" width="250"/>
+  <img src="/Users/rijan/Quetzal/auth_screen/assets/MarketSim pictures/MarketSim:speedRun Screenshot .png" alt="SpeedRun Tutorial" width="250">
+  <img src="/Users/rijan/Quetzal/auth_screen/assets/MarketSim pictures/MarketSim:speedRun Screenshot - iPhone 16 Pro Max - 2025-05-12 at 17.41.29.png" alt="SpeedRun Trading" width="250">
 </p>
 
 ## 🔧 Installation
@@ -102,5 +104,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 <p align="center">
-  Made with ❤️ by the Quetzal Team
+  Made with ❤️ by the MarketSim Team
 </p>
