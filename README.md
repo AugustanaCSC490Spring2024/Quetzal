@@ -34,7 +34,7 @@ MarketSim is a powerful market simulation platform designed to provide users wit
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="./auth_screen/assets/MarketSim pictures/MarketSim-homeScreen.png" alt="Dashboard" width="250"/>
+  <img src="auth_screen/assets/MarketSim pictures/MarketSim:game center.png" alt="Dashboard" width="250"/>
   <img src="./auth_screen/assets/MarketSim pictures/MarketSim-gameCenter.png" alt="Game Center" width="250"/>
   <img src="./auth_screen/assets/MarketSim pictures/MarketSim-quiz.png" alt="Quiz Center" width="250"/>
   <img src="./auth_screen/assets/MarketSim pictures/MarketSim-speedRun-tutorial.png" alt="SpeedRun Tutorial" width="250">
