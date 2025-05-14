@@ -2,8 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:auth_screen/search_button.dart';
 import 'package:auth_screen/portfolio_management.dart';
-import 'package:auth_screen/screens/stocks_detail_page.dart';
-import 'package:auth_screen/trading_stock_handller.dart';
+import 'package:auth_screen/widgets/stock_list_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,12 +19,6 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   // Index of the selected BottomNavigationBar tab.
   int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    // ...existing code...
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +154,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2E7D32)
-                          .withAlpha(25), // Updated from withOpacity(0.1)
+                      color: const Color(0xFF2E7D32).withAlpha(25),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -194,8 +186,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 12),
 
-          // Stocks List
-          _buildStockWidgets(),
+          // Stocks List - now using our StockListWidget
+          const StockListWidget(),
           const SizedBox(height: 20),
         ],
       ),
@@ -218,8 +210,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.primary,
-              theme.colorScheme.secondary
-                  .withAlpha(204), // Updated from withOpacity(0.8)
+              theme.colorScheme.secondary.withAlpha(204),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -238,8 +229,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     style: GoogleFonts.montserrat(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white
-                          .withAlpha(230), // Updated from withOpacity(0.9)
+                      color: Colors.white.withAlpha(230),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -257,8 +247,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             Container(
               decoration: BoxDecoration(
-                color:
-                    Colors.white.withAlpha(51), // Updated from withOpacity(0.2)
+                color: Colors.white.withAlpha(51),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
@@ -271,168 +260,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
       ),
-    );
-  }
-
-  // Builds the widget that displays the user's portfolio stocks as a list.
-  Widget _buildStockWidgets() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('portfolio')
-          .doc('details')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Card(
-            elevation: 1,
-            color: Colors.red[50],
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          );
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2E7D32)),
-            ),
-          );
-        }
-
-        var portfolioData =
-            (snapshot.data!.data() as Map<String, dynamic>?) ?? {};
-        List<Map<String, dynamic>> userStocks =
-            portfolioData.containsKey('stocks')
-                ? List<Map<String, dynamic>>.from(portfolioData['stocks'])
-                : [];
-
-        if (userStocks.isEmpty) {
-          return Card(
-            elevation: 1,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            color: Colors.blue[50],
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Center(
-                child: Column(
-                  children: [
-                    const Icon(Icons.info_outline,
-                        size: 40, color: Colors.blueAccent),
-                    const SizedBox(height: 12),
-                    Text(
-                      'No stocks in your portfolio yet',
-                      style:
-                          GoogleFonts.montserrat(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: userStocks.length,
-          itemBuilder: (context, index) {
-            final stock = userStocks[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            StockDetailsPage(ticker: stock['ticker'])),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.green.withOpacity(0.1),
-                        child: Text(
-                          stock['ticker'].substring(0, 1),
-                          style: const TextStyle(
-                              color: Color(0xFF2E7D32),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              stock['ticker'],
-                              style: GoogleFonts.montserrat(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Shares: ${stock['quantity'].toStringAsFixed(2)}',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            Text(
-                              'Value: \$${stock['equity'].toStringAsFixed(2)}',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    TradePage(ticker: stock['ticker'])),
-                          );
-                          if (result == 'updated') {
-                            setState(() {});
-                          }
-                        },
-                        icon: const Icon(Icons.trending_up, size: 18),
-                        label: const Text('Trade'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2E7D32),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
     );
   }
 
