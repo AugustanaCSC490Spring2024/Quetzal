@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class PortfolioManagementWidget extends StatefulWidget {
+  const PortfolioManagementWidget({super.key});
+
   @override
-  _PortfolioManagementWidgetState createState() =>
-      _PortfolioManagementWidgetState();
+  State<PortfolioManagementWidget> createState() =>
+      PortfolioManagementWidgetState();
 }
 
-class _PortfolioManagementWidgetState extends State<PortfolioManagementWidget> {
+class PortfolioManagementWidgetState extends State<PortfolioManagementWidget> {
   // List of available time ranges to display.
   final List<String> timeRanges = ["Day", "Wk", "Mo", "3M", "YTD", "All"];
   // Index of the currently selected time range.

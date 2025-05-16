@@ -102,7 +102,8 @@ class GameScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white
+                              .withAlpha(51), // Updated from withOpacity(0.2)
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(

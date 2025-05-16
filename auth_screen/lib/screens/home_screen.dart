@@ -47,7 +47,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
       ),
       body: _buildBody(),
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor:
+          theme.colorScheme.surface, // Updated from background to surface
       bottomNavigationBar: BottomNavigationBar(
         elevation: 8,
         backgroundColor: Colors.white,

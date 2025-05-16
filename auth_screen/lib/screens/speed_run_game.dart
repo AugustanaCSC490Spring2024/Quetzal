@@ -475,7 +475,7 @@ class SpeedrunState extends State<Speedrun>
       });
 
       showSnackBar(
-          "Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker (${totalBuys}/$maxBuys)");
+          "Bought at \$${currentPrice.toStringAsFixed(2)} for $selectedTicker ($totalBuys/$maxBuys)");
     } else {
       showSnackBar("You have reached the maximum number of buys.");
     }
@@ -523,7 +523,7 @@ class SpeedrunState extends State<Speedrun>
   Future<void> _updateUserPoints() async {
     try {
       await _tradingService.updatePoints(gpoints);
-      showSnackBar("Points updated in Firebase: ${gpoints.toStringAsFixed(2)}");
+      showSnackBar("Points updated in Firebase: $gpoints");
     } catch (error) {
       logger.e('Transaction failed: $error');
       showSnackBar("Failed to update points in Firebase.");
@@ -608,7 +608,8 @@ class SpeedrunState extends State<Speedrun>
             end: Alignment.bottomCenter,
             colors: [
               const Color(0xFF3A5199),
-              const Color(0xFF2C74B3).withOpacity(0.8),
+              const Color(0xFF2C74B3)
+                  .withAlpha(204), // Changed from withOpacity(0.8)
             ],
           ),
         ),
@@ -692,7 +693,7 @@ class SpeedrunState extends State<Speedrun>
             onPressed: handleBuy,
             icon: const Icon(Icons.add_shopping_cart),
             label: Text(
-              'BUY (${totalBuys}/$maxBuys)',
+              'BUY ($totalBuys/$maxBuys)',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -834,7 +835,7 @@ class SpeedrunState extends State<Speedrun>
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white.withAlpha(204), // 80% opacity
+          color: Colors.white.withAlpha(204), // Changed from withOpacity(0.8)
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

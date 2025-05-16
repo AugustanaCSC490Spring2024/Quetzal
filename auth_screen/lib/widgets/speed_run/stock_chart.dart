@@ -24,7 +24,7 @@ class StockChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(26), // Changed from withOpacity(0.1)
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -43,13 +43,15 @@ class StockChart extends StatelessWidget {
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {
               return FlLine(
-                color: Colors.grey.withOpacity(0.2),
+                color:
+                    Colors.grey.withAlpha(51), // Changed from withOpacity(0.2)
                 strokeWidth: 1,
               );
             },
             getDrawingVerticalLine: (value) {
               return FlLine(
-                color: Colors.grey.withOpacity(0.2),
+                color:
+                    Colors.grey.withAlpha(51), // Changed from withOpacity(0.2)
                 strokeWidth: 1,
               );
             },
@@ -72,7 +74,7 @@ class StockChart extends StatelessWidget {
           borderData: FlBorderData(
             show: true,
             border: Border.all(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withAlpha(77), // Changed from withOpacity(0.3)
               width: 1,
             ),
           ),
@@ -88,7 +90,7 @@ class StockChart extends StatelessWidget {
               belowBarData: BarAreaData(
                 show: true,
                 color: (isPriceIncreasing ? Colors.green : Colors.red)
-                    .withOpacity(0.2),
+                    .withAlpha(51), // Changed from withOpacity(0.2)
                 cutOffY: _getMinY(),
                 applyCutOffY: true,
               ),

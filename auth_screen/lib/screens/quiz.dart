@@ -41,24 +41,32 @@ class QuizScreenState extends State<QuizScreen> {
   }
 
   Future<void> updatePointsInFirestore() async {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-    var userDocRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('portfolio')
-        .doc('details');
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      var userDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('portfolio')
+          .doc('details');
 
-    var userDocSnapshot = await userDocRef.get();
-    var userData = userDocSnapshot.data() ?? {};
+      var userDocSnapshot = await userDocRef.get();
+      var userData = userDocSnapshot.data() ?? {};
 
-    double currentPoints = userData.containsKey('points')
-        ? (userData['points'] as num).toDouble()
-        : 0.0;
-    double newPoints = currentPoints + correctAnswers;
+      double currentPoints = userData.containsKey('points')
+          ? (userData['points'] as num).toDouble()
+          : 0.0;
+      double newPoints = currentPoints + correctAnswers;
 
-    await userDocRef.set({
-      'points': newPoints,
-    }, SetOptions(merge: true));
+      await userDocRef.set({
+        'points': newPoints,
+      }, SetOptions(merge: true));
+
+      if (mounted) {
+        // Use context here
+      }
+    } catch (e) {
+      // Handle error
+    }
   }
 
   void _showIntroPopup() {
@@ -302,7 +310,7 @@ class QuizScreenState extends State<QuizScreen> {
                         value: questions.isEmpty
                             ? 0
                             : totalAnswered / questions.length,
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: Colors.white.withAlpha(51),
                         color: Colors.white,
                         minHeight: 8,
                       ),
@@ -444,12 +452,12 @@ class QuestionCardState extends State<QuestionCard>
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Material(
                       color: isCorrect
-                          ? Colors.green.withOpacity(0.1)
+                          ? Colors.green.withAlpha(26)
                           : isWrong
-                              ? Colors.red.withOpacity(0.1)
+                              ? Colors.red.withAlpha(26)
                               : isSelected
-                                  ? const Color(0xFF3A5199).withOpacity(0.1)
-                                  : Colors.grey.withOpacity(0.05),
+                                  ? const Color(0xFF3A5199).withAlpha(26)
+                                  : Colors.grey.withAlpha(13),
                       borderRadius: BorderRadius.circular(12),
                       child: InkWell(
                         onTap: answerChecked
@@ -564,8 +572,8 @@ class QuestionCardState extends State<QuestionCard>
                     margin: const EdgeInsets.only(top: 8),
                     decoration: BoxDecoration(
                       color: selectedOption == widget.answer
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.red.withOpacity(0.1),
+                          ? Colors.green.withAlpha(26)
+                          : Colors.red.withAlpha(26),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: selectedOption == widget.answer

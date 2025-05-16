@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           seedColor: primaryColor,
           primary: primaryColor,
           secondary: secondaryColor,
-          background: backgroundColor,
+          surface: backgroundColor, // Changed from background to surface
           tertiary: accentColor,
           brightness: Brightness.light,
         ),

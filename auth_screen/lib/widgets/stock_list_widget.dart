@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/stocks_detail_page.dart';
 import 'package:auth_screen/trading_stock_handller.dart';
-import 'package:auth_screen/services/stock_price_service.dart';
+import 'package:auth_screen/api/api_module.dart'; // Updated import
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +14,14 @@ class StockListWidget extends StatefulWidget {
 }
 
 class _StockListWidgetState extends State<StockListWidget> {
-  final StockPriceService _stockPriceService = StockPriceService();
+  final ApiModule _api =
+      ApiModule(); // Use API module instead of direct service
+
+  @override
+  void dispose() {
+    _api.dispose(); // Clean up resources
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +57,7 @@ class _StockListWidgetState extends State<StockListWidget> {
         }
 
         // Schedule price updates for all stocks
-        _stockPriceService.schedulePriceUpdates(userStocks);
+        _api.stockService.schedulePriceUpdates(userStocks);
 
         return _buildStockList(userStocks);
       },
@@ -94,10 +101,10 @@ class _StockListWidgetState extends State<StockListWidget> {
 
   Widget _buildStockList(List<Map<String, dynamic>> userStocks) {
     return ValueListenableBuilder<Map<String, double>>(
-      valueListenable: _stockPriceService.pricesNotifier,
+      valueListenable: _api.stockService.pricesNotifier,
       builder: (context, latestPrices, _) {
         return ValueListenableBuilder<Map<String, Color>>(
-          valueListenable: _stockPriceService.colorsNotifier,
+          valueListenable: _api.stockService.colorsNotifier,
           builder: (context, priceColors, _) {
             return ListView.builder(
               shrinkWrap: true,
@@ -174,7 +181,8 @@ class StockCard extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.green.withOpacity(0.1),
+                    backgroundColor: Colors.green
+                        .withAlpha(26), // Changed from withOpacity(0.1)
                     child: Text(
                       ticker.substring(0, 1),
                       style: const TextStyle(
@@ -289,8 +297,10 @@ class StockCard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     color: isRealPrice
-                        ? Colors.green.withOpacity(0.2)
-                        : Colors.grey.withOpacity(0.2),
+                        ? Colors.green
+                            .withAlpha(51) // Changed from withOpacity(0.2)
+                        : Colors.grey
+                            .withAlpha(51), // Changed from withOpacity(0.2)
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(

@@ -17,7 +17,7 @@ class InstructionItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF3A5199).withOpacity(0.1),
+            color: Colors.grey.withAlpha(15),
             shape: BoxShape.circle,
           ),
           child: Icon(

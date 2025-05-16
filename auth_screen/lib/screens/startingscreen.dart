@@ -1,21 +1,31 @@
-
 import 'package:flutter/material.dart';
 import 'package:auth_screen/screens/sign_in_screen.dart'; // next screen
 
-class StartingScreen extends StatelessWidget {
+class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<StartingScreen> createState() => _StartingScreenState();
+}
+
+class _StartingScreenState extends State<StartingScreen> {
+  @override
+  void initState() {
+    super.initState();
     const delayDuration = Duration(seconds: 4);
 
     Future.delayed(delayDuration, () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const SignIn()),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SignIn()),
+        );
+      }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -28,5 +38,5 @@ class StartingScreen extends StatelessWidget {
         ),
       ),
     );
-  } 
+  }
 }
